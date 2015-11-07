@@ -14,9 +14,10 @@ import java.util.ArrayList;
  */
 public class Line extends Data {
     public ArrayList<Color> listColor = new ArrayList<Color>();
+    public ArrayList<String> listName = new ArrayList<String>();
     
     
-    public static Line newData(ArrayList<Integer> time, ArrayList<Integer> colors) {
+    public static Line newData(ArrayList<Integer> time, ArrayList<Integer> colors, ArrayList<String> names) {
         Line list = new Line();
         list.type = Data.LINE;
         
@@ -25,6 +26,7 @@ public class Line extends Data {
             list.listColor.add(color);
         }
         list.listTime = time;
+        list.listName = names;
         return list;
     }
     

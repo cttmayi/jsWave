@@ -29,7 +29,7 @@ public class Diagram extends Data{
             }
             list.listY.add(y);
         }
-        list.heightMax = heightMax;
+        list.setHeightMax(heightMax);
         return list;
     }
     

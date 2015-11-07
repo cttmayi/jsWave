@@ -32,7 +32,7 @@ public class Histogram extends Data{
             list.listY.add(y);
         }
         
-        list.heightMax = heightMax;
+        list.setHeightMax(heightMax);
         list.listTime = time;
         list.width = widthItem;
         return list;

@@ -7,6 +7,7 @@ package jswave.st;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import jswave.Util;
 import static jswave.st.Data.ColorMake;
 
 /**
@@ -25,7 +26,8 @@ public class Connection {
     }
 
     public int getX(int ts, int xs, double wdt) {
-        return (int)((time - ts) * wdt) + xs;
+        return Util.getX(time, xs, ts, wdt);
+        //return (int)((time - ts) * wdt) + xs;
     }
     
     

@@ -15,6 +15,7 @@ import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import jswave.JsWaveJFrame;
 
 /**
  *
@@ -23,6 +24,18 @@ import javax.script.ScriptException;
 public class JsEnv {
 
     ScriptEngine engine;
+
+    static JsEnv jsEnv;
+    public static JsEnv getJsEnv(JsWaveJFrame frame) {
+        if (jsEnv == null) {
+            jsEnv = new JsEnv();
+            jsEnv.frame = frame;
+        }
+        return jsEnv;
+    }
+    
+    public JsWaveJFrame frame;    
+
     
     public JsEnv(){
         ScriptEngineManager mgr = new ScriptEngineManager();    
@@ -38,15 +51,30 @@ public class JsEnv {
         
     }
     
-    public void invokeFunction(String functionname, Object ... args) {
+    public void loadString(String soucre) {
+        try {
+            engine.eval(soucre);
+        } catch (ScriptException ex) {
+            Logger.getLogger(JsEnv.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    } 
+    
+    public void defineFuntion(String function) {
+        loadString("function " + function + "(){}");
+    }
+    
+    public boolean invokeFunction(String functionname, Object ... args) {
         Invocable inv = (Invocable) engine;
         try {          
             inv.invokeFunction(functionname, args);
         } catch (ScriptException ex) {
             Logger.getLogger(JsEnv.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         } catch (NoSuchMethodException ex) {
             Logger.getLogger(JsEnv.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
+        return true;
     }
     
     

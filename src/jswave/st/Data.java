@@ -7,6 +7,7 @@ package jswave.st;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import jswave.Util;
 
 /**
  *
@@ -21,7 +22,10 @@ public class Data {
     private String name = null;
     
     
-    public int heightMax = 20;
+    private int heightMax = 20;
+    
+    private int yStart = 0;
+    private int yEnd = 0;
     
     
     
@@ -32,6 +36,20 @@ public class Data {
     public int getHeightMax() {
         return heightMax;
     }
+    
+    public void setY(int start, int end) {
+        yStart = start;
+        yEnd = end;
+    }
+    
+    public int getY1() {
+        return yStart;
+    }
+
+    public int getY2() {
+        return yEnd;
+    }
+    
     
     public void setTime(ArrayList<Integer> time) {
         listTime = time;    
@@ -55,8 +73,8 @@ public class Data {
     
     private ArrayList<Integer> timeToX(int ts, int xs, double wdt) {
         ArrayList<Integer> x = new ArrayList<Integer>();
-        for (Integer listTimeItem:listTime) {
-            x.add((int) ((listTimeItem - ts) * wdt) + xs);
+        for (Integer t:listTime) {
+            x.add(Util.getX(t, xs,ts, wdt));
         }
         return x;
     }
