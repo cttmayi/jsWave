@@ -6,8 +6,6 @@
 package jswave;
 
 import java.awt.Dimension;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
@@ -23,9 +21,6 @@ import jswave.ui.WaveJPanel;
  * @author lenovo
  */
 public class JsWaveJFrame extends javax.swing.JFrame {
-
-    
-
     /**
      * Creates new form jsWaveJFrame
      */
@@ -55,7 +50,7 @@ public class JsWaveJFrame extends javax.swing.JFrame {
     }
 
     private void initUI() {
-        jSplitPaneLR.setDividerLocation(jSplitPaneLR.getWidth() - 200);
+        jSplitPaneLR.setDividerLocation(jSplitPaneLR.getWidth() - 240);
         jSplitPaneLR.setOneTouchExpandable(true);
         jSplitPaneLR.setResizeWeight(1.0);
         
@@ -63,21 +58,12 @@ public class JsWaveJFrame extends javax.swing.JFrame {
         jSplitPaneUD.setResizeWeight(0.7);
  
         waveJPanel.setMinimumSize(new Dimension(600,500));
-        
         jScrollPaneU.setMinimumSize(new Dimension(200,100));
-        
-        jSplitPaneLR.addComponentListener(new ComponentAdapter(){
-            public void componentResized(ComponentEvent e) {
-                //jSplitPaneLR.setDividerLocation(jSplitPaneLR.get);
-            }
-        });
         
         this.addWindowStateListener(new WindowStateListener () {
             @Override 
             public void windowStateChanged(WindowEvent state) {
-
-                System.out.println("w:" + waveJPanel.getWidth());
-
+                //System.out.println("w:" + waveJPanel.getWidth());
             }
         });
     }
@@ -111,10 +97,7 @@ public class JsWaveJFrame extends javax.swing.JFrame {
             public void keyReleased(KeyEvent e) { 
 
             } 
- 
-        });         
-        
-        
+        });
     }
     
     public void setTable(ArrayList<String> names, ArrayList<String> datas, ArrayList<String> datars) {
@@ -168,9 +151,6 @@ public class JsWaveJFrame extends javax.swing.JFrame {
         jScrollPaneD = new javax.swing.JScrollPane();
         jTextAreaInfo = new javax.swing.JTextArea();
         jMenuBarMain = new javax.swing.JMenuBar();
-        jMenuFile = new javax.swing.JMenu();
-        jMenuOpen = new javax.swing.JMenu();
-        jMenuEdit = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -184,7 +164,7 @@ public class JsWaveJFrame extends javax.swing.JFrame {
         );
         waveJPanelLayout.setVerticalGroup(
             waveJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 745, Short.MAX_VALUE)
+            .addGap(0, 764, Short.MAX_VALUE)
         );
 
         jSplitPaneLR.setLeftComponent(waveJPanel);
@@ -252,20 +232,6 @@ public class JsWaveJFrame extends javax.swing.JFrame {
         jSplitPaneLR.setRightComponent(jSplitPaneUD);
 
         jMenuBarMain.setFont(jMenuBarMain.getFont());
-
-        jMenuFile.setText("File");
-        jMenuFile.setFont(jMenuFile.getFont());
-        jMenuFile.setHideActionText(true);
-
-        jMenuOpen.setText("Open");
-        jMenuFile.add(jMenuOpen);
-
-        jMenuBarMain.add(jMenuFile);
-
-        jMenuEdit.setText("Edit");
-        jMenuEdit.setFont(jMenuEdit.getFont());
-        jMenuBarMain.add(jMenuEdit);
-
         setJMenuBar(jMenuBarMain);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -320,9 +286,6 @@ public class JsWaveJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar jMenuBarMain;
-    private javax.swing.JMenu jMenuEdit;
-    private javax.swing.JMenu jMenuFile;
-    private javax.swing.JMenu jMenuOpen;
     private javax.swing.JScrollPane jScrollPaneD;
     private javax.swing.JScrollPane jScrollPaneU;
     private javax.swing.JSplitPane jSplitPaneLR;

@@ -63,7 +63,7 @@ public class Data {
         return this.name;
     }
     public ArrayList<Integer> getX(int ts, int xs, double wdt) {
-        listX = timeToX(ts, xs, wdt);
+        listX = timeToX(listTime, ts, xs, wdt);
         return listX;
     }
     
@@ -71,16 +71,16 @@ public class Data {
     
     public ArrayList<Integer> listX = new ArrayList<Integer>();
     
-    private ArrayList<Integer> timeToX(int ts, int xs, double wdt) {
+    public ArrayList<Integer> timeToX(ArrayList<Integer> times,  int ts, int xs, double wdt) {
         ArrayList<Integer> x = new ArrayList<Integer>();
-        for (Integer t:listTime) {
+        for (Integer t:times) {
             x.add(Util.getX(t, xs,ts, wdt));
         }
         return x;
     }
     
     public static Color ColorMake(int colori) {
-        return new Color((0xFF0000 & colori) >> 16, (0xFF00 & colori) >> 8, 0xFF & colori);
+        return Util.colorMake(colori);
     }
     
     

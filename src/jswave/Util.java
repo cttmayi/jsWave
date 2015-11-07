@@ -5,6 +5,9 @@
  */
 package jswave;
 
+import java.awt.Color;
+import java.util.ArrayList;
+
 /**
  *
  * @author lenovo
@@ -40,5 +43,25 @@ public class Util {
             return String.valueOf(t).concat("us");
         }
     }
+
+    public static Color colorMake(int colori) {
+        return new Color((0xFF0000 & colori) >> 16, (0xFF00 & colori) >> 8, 0xFF & colori);
+    }
+    
+    public static ArrayList<Integer> d2t(ArrayList<Double> ds) {
+        ArrayList<Integer> ts = new ArrayList<Integer>();
+        for (double d: ds) {
+            ts.add((int) d);
+        }
+        return ts;
+    }
+    
+    public static ArrayList<Color> d2c(ArrayList<Double> ds) {
+        ArrayList<Color> cs = new ArrayList<Color>();
+        for (double d: ds) {
+            cs.add(colorMake((int) d));
+        }
+        return cs;
+    }    
     
 }

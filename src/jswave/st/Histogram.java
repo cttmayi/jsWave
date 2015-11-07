@@ -14,10 +14,19 @@ import java.util.ArrayList;
  */
 public class Histogram extends Data{
     public int width;
+    public ArrayList<Integer> listTime2 = new ArrayList<Integer>();
     public ArrayList<Color> listColor = new ArrayList<Color>();
     public ArrayList<Integer> listY = new ArrayList<Integer>();
+    public ArrayList<String> listName = new ArrayList<String>();
+
     
-    public static Histogram newData(ArrayList<Integer> time, ArrayList<Integer> ys, ArrayList<Integer> colors, int widthItem, int heightMax) {
+    public ArrayList<Integer> getX2(int ts, int xs, double wdt) {
+        listX = timeToX(listTime2, ts, xs, wdt);
+        return listX;
+    }
+    
+    public static Histogram newData(ArrayList<Integer> time, ArrayList<Integer> time2, 
+            ArrayList<Integer> ys, ArrayList<Integer> colors, ArrayList<String> names, int heightMax) {
         Histogram list = new Histogram();
         list.type = Data.HISTOGRAM;
         for (int id=0; id<colors.size(); id++) {
@@ -34,7 +43,8 @@ public class Histogram extends Data{
         
         list.setHeightMax(heightMax);
         list.listTime = time;
-        list.width = widthItem;
+        list.listTime2 = time2;
+        list.listName = names;
         return list;
     }    
     
