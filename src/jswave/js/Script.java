@@ -6,7 +6,7 @@
 package jswave.js;
 
 import java.util.ArrayList;
-import jswave.JsWaveJFrame;
+import jswave.ui.JsWaveJFrame;
 import jswave.Util;
 
 /**
@@ -55,9 +55,7 @@ public class Script {
             this.frame.getPanel().funConnectionListener = name;
         }
     }
-    
-    
-    
+ 
     public int addLine(String name, ArrayList<Double> times, ArrayList<Double> colors, ArrayList<String> names) {
         
         ArrayList<Integer> timei = Util.d2t(times);
@@ -87,7 +85,6 @@ public class Script {
         
         return -1;
     }
-    
     
     public void addConnection(double time, double start, double end, double color) {
         this.frame.getPanel().addConnection((int)time, (int)start, (int)end, (int)color);

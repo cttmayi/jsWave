@@ -184,10 +184,13 @@ public final class WaveJPanel extends javax.swing.JPanel {
     }
     
     public int addConnection(int time, int start, int end, int color) {
-        Connection data = Connection.newData(time, start, end, color);
         
-        connectionList.add(data);
-        return connectionList.size() - 1;
+        if (start < waveList.size() && end < waveList.size()) {
+            Connection data = Connection.newData(time, start, end, color);
+            connectionList.add(data);
+            return connectionList.size() - 1; 
+        }
+        return -1;
     }
     
     public void setInfo(ArrayList<Integer> xs, ArrayList<Integer> ys, 

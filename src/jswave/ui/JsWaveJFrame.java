@@ -3,18 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jswave;
+package jswave.ui;
 
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
+import java.io.File;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
+import jswave.Util;
 import jswave.js.JsEnv;
 import jswave.js.Script;
-import jswave.ui.WaveJPanel;
 
 /**
  *
@@ -43,8 +44,33 @@ public class JsWaveJFrame extends javax.swing.JFrame {
         script.setFrame(this);
         
         jsEnv = JsEnv.getJsEnv(this);
-        jsEnv.loadFile("default.js");
-        jsEnv.invokeFunction("main");
+        
+        
+        String jarPath = Util.getJarPath();
+        String defaultJs = jarPath + "default.js";
+        String libPath = jarPath + "libs\\";
+        
+        File dir = new File(libPath);
+        File file[] = dir.listFiles();
+        if (file != null) {
+            for (int i = 0; i < file.length; i++) {
+                if (file[i].isDirectory()) {
+                }
+                else {
+                    System.out.println(file[i].getAbsolutePath());
+                    jsEnv.loadFile(file[i].getAbsolutePath());
+                }  
+            }
+        }
+        
+        if (Util.getPara(Util.PATH) != null) {
+            if (Util.isFileExist(Util.getPara(Util.PATH))) {
+                jsEnv.loadFile(Util.getPara(Util.PATH));
+            }
+        }
+        else if (Util.isFileExist(defaultJs)){
+            jsEnv.loadFile(defaultJs);
+        }
 
         waveJPanel.setTimeRange(0, 8100000);
     }
@@ -247,42 +273,6 @@ public class JsWaveJFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JsWaveJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JsWaveJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JsWaveJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JsWaveJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JsWaveJFrame().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar jMenuBarMain;
