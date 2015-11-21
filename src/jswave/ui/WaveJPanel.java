@@ -690,13 +690,13 @@ public final class WaveJPanel extends javax.swing.JPanel {
         
     }
 
-    void doClickCallback(int id, int x, int y) {
+    void doClickCallback(int line, int x, int y) {
         if (funClickListener != null) {
-            Data wave = waveList.get(id);
-            int mid = wave.getCallbackId(x, y);
+            Data wave = waveList.get(line);
+            int id = wave.getCallbackId(x, y);
             //System.out.println(id);
-            if (mid > 0) {
-                JsEnv.getJsEnv(null).invokeFunction(funClickListener, id, mid, getTime(x));
+            if (id > 0) {
+                JsEnv.getJsEnv(null).invokeFunction(funClickListener, id, getTime(x), line);
                 repaint();
             }
         }

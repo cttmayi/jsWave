@@ -142,7 +142,7 @@ function wave(id, t, line) {
 	infoShow("line: " + line + "\nid: " + id, t, line)
 }
 
-function click(line, id, t) {
+function click(id, t, line) {
 	infoShow("click " + id, t, line)
 }
 main()
