@@ -138,7 +138,7 @@ function connection(id, t, l) {
 	
 }
 
-function wave(line, id, t) {
+function wave(id, t, line) {
 	infoShow("line: " + line + "\nid: " + id, t, line)
 }
 
