@@ -108,8 +108,8 @@ public class Script {
         return -1;
     }
     
-    public void addConnection(double time, double start, double end, double color) {
-        this.frame.getPanel().addConnection((int)time, (int)start, (int)end, (int)color);
+    public int addConnection(double time, double start, double end, double color) {
+        return this.frame.getPanel().addConnection((int)time, (int)start, (int)end, (int)color);
     }
     
     public void setTable(ArrayList<String> names, ArrayList<String> datas, ArrayList<String> datars) {
