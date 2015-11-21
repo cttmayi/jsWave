@@ -676,14 +676,14 @@ public final class WaveJPanel extends javax.swing.JPanel {
                 int id = wave.getCallbackId(x, y);
                 if (id >= 0) {
                     itemWaveMoveSelected = id;
-                    JsEnv.getJsEnv(null).invokeFunction(funWaveListener, i, id, getTime(x));
+                    JsEnv.getJsEnv(null).invokeFunction(funWaveListener, id, getTime(x), i);
                     repaint();
                     return;
                 }
             }
             if (itemWaveMoveSelected != -1) {
                 itemWaveMoveSelected = -1;
-                JsEnv.getJsEnv(null).invokeFunction(funWaveListener, -1, -1, getTime(x));
+                JsEnv.getJsEnv(null).invokeFunction(funWaveListener, -1, getTime(x), -1);
                 repaint();
             }
         }
