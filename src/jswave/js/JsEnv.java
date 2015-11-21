@@ -8,7 +8,6 @@ package jswave.js;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.script.Invocable;
@@ -19,7 +18,7 @@ import jswave.ui.JsWaveJFrame;
 
 /**
  *
- * @author lenovo
+ * @author cttmayi
  */
 public class JsEnv {
 

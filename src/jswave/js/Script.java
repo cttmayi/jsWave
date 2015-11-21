@@ -29,6 +29,11 @@ public class Script {
         this.frame = frame;
     }
     
+    public void setTimeRuler(Number s) {
+        this.frame.getPanel().setTimeRuler(s.intValue());
+    }
+    
+    
     public void setRangeListener(String name) {
         if (name.equals("")) {
             this.frame.getPanel().funRangeListener = null;
@@ -55,11 +60,29 @@ public class Script {
             this.frame.getPanel().funConnectionListener = name;
         }
     }
- 
-    public int addLine(String name, ArrayList<Double> times, ArrayList<Double> colors, ArrayList<String> names) {
+
+    public void setWaveListener(String name) {
+        if (name.equals("")) {
+            this.frame.getPanel().funWaveListener = null;
+        }
+        else {
+            this.frame.getPanel().funWaveListener = name;
+        }
+    }
+    
+    public void setClickListener(String name) {
+        if (name.equals("")) {
+            this.frame.getPanel().funClickListener = null;
+        }
+        else {
+            this.frame.getPanel().funClickListener = name;
+        }
+    }    
+    
+    public int addLine(String name, ArrayList<Number> times, ArrayList<Number> colors, ArrayList<String> names) {
         
-        ArrayList<Integer> timei = Util.d2t(times);
-        ArrayList<Integer> colori = Util.d2t(colors);
+        ArrayList<Integer> timei = Util.an2i(times);
+        ArrayList<Integer> colori = Util.an2i(colors);
         
         //System.out.println("TIME TYPE:" + times.get(0).getClass().getName());
         //System.out.println("COLOR TYPE:"+ colors.get(0).getClass().getName());
@@ -71,13 +94,13 @@ public class Script {
         return -1;
     }
 
-    public int addHistogram(String name, ArrayList<Double> times, ArrayList<Double> times2, 
-            ArrayList<Double> ys, ArrayList<Double> colors, ArrayList<String> names, int heightMax) {
+    public int addHistogram(String name, ArrayList<Number> times, ArrayList<Number> times2, 
+            ArrayList<Number> ys, ArrayList<Number> colors, ArrayList<String> names, int heightMax) {
 
-        ArrayList<Integer> timei = Util.d2t(times);
-        ArrayList<Integer> timei2 = Util.d2t(times2);
-        ArrayList<Integer> yi = Util.d2t(ys);
-        ArrayList<Integer> colori = Util.d2t(colors);
+        ArrayList<Integer> timei = Util.an2i(times);
+        ArrayList<Integer> timei2 = Util.an2i(times2);
+        ArrayList<Integer> yi = Util.an2i(ys);
+        ArrayList<Integer> colori = Util.an2i(colors);
         
         if (!times.isEmpty()) {   
             return this.frame.getPanel().addHistogram(name, timei, timei2, yi, colori, names, heightMax);
@@ -98,13 +121,13 @@ public class Script {
         this.frame.setText(text);
     }
 
-    public void setInfo(ArrayList<Double> xs, ArrayList<Double> ys, 
-            ArrayList<String> names, ArrayList<Double> fgcs, ArrayList<Double> bgcs) {
+    public void setInfo(ArrayList<Number> xs, ArrayList<Number> ys, 
+            ArrayList<String> names, ArrayList<Number> fgcs, ArrayList<Number> bgcs) {
         
-        ArrayList<Integer> xi = Util.d2t(xs);
-        ArrayList<Integer> yi = Util.d2t(ys);
-        ArrayList<Integer> fi = Util.d2t(fgcs);
-        ArrayList<Integer> bi = Util.d2t(bgcs);       
+        ArrayList<Integer> xi = Util.an2i(xs);
+        ArrayList<Integer> yi = Util.an2i(ys);
+        ArrayList<Integer> fi = Util.an2i(fgcs);
+        ArrayList<Integer> bi = Util.an2i(bgcs);       
         
         this.frame.getPanel().setInfo(xi, yi, names, fi, bi);
     }
@@ -113,5 +136,8 @@ public class Script {
     public void print(String str) {
         System.out.println(str);
     }
+    
+    
+    
     
 }

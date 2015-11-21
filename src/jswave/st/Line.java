@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author lenovo
+ * @author cttmayi
  */
 public class Line extends Data {
     public ArrayList<Color> listColor = new ArrayList<Color>();

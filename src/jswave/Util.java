@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author lenovo
+ * @author cttmayi
  */
 public class Util {
     
@@ -75,39 +75,83 @@ public class Util {
     public static Color colorMake(int colori) {
         return new Color((0xFF0000 & colori) >> 16, (0xFF00 & colori) >> 8, 0xFF & colori);
     }
-    
-    public static ArrayList<Integer> d2t(ArrayList<Double> ds) {
+
+    public static int o2i(Object o) {
+        
+        String type = o.getClass().getName();
+        System.out.println(type);
+        if (type.equals("java.lang.Double")) {
+            
+        }
+        else if (type.equals("java.lang.Integer")){
+            
+        }
+        else if (type.equals("java.lang.Long")){
+            
+        }        
+        
+        return 0;
+    } 
+
+    public static ArrayList<Integer> an2i(ArrayList<Number> ds) {
         ArrayList<Integer> ts = new ArrayList<Integer>();
-        for (double d: ds) {
-            ts.add((int) d);
+        for (Number d: ds) {
+            ts.add(d.intValue());
         }
         return ts;
     }
     
-    public static ArrayList<Color> d2c(ArrayList<Double> ds) {
+    public static ArrayList<Color> an2c(ArrayList<Number> ds) {
         ArrayList<Color> cs = new ArrayList<Color>();
-        for (double d: ds) {
-            cs.add(colorMake((int) d));
+        for (Number d: ds) {
+            cs.add(colorMake(d.intValue()));
         }
         return cs;
     }    
 
     public static String getJarPath(){  
         String filePath = System.getProperty("java.class.path");  
-        String pathSplit = System.getProperty("path.separator");//windows下是";",linux下是":"  
-          
-        if(filePath.contains(pathSplit)){  
-            filePath = filePath.substring(0,filePath.indexOf(pathSplit));  
-        }else if (filePath.endsWith(".jar")) {//截取路径中的jar包名,可执行jar包运行的结果里包含".jar"  
-            //此时的路径是"E:\workspace\Demorun\Demorun_fat.jar"，用"/"分割不行  
-            //下面的语句输出是-1，应该改为lastIndexOf("\\")或者lastIndexOf(File.separator)  
-//          System.out.println("getPath2:"+filePath.lastIndexOf("/"));  
-            filePath = filePath.substring(0, filePath.lastIndexOf(File.separator) + 1);  
-              
-        }  
+        String pathSplit = System.getProperty("path.separator");
+        
+        if(filePath.contains(pathSplit)){
+            filePath = filePath.substring(0,filePath.indexOf(pathSplit)) + '\\';
+        }
+        else if (filePath.endsWith(".jar")) {
+            filePath = filePath.substring(0, filePath.lastIndexOf(File.separator) + 1);
+        }
+        else {
+            filePath = filePath + "\\";
+        }
         return filePath;  
     } 
+
+    public final static int S = 1000000;
+    public final static int MS = 1000;
+    public final static int US = 1;
     
     
+    public static int s(int s) {
+        return s * S;
+    }
+    
+    public static int s(float s) {
+        return (int)(s * S);
+    }
+
+    public static int ms(int ms) {
+        return ms * MS;
+    }
+   
+    public static int ms(float ms) {
+        return (int)(ms * MS);
+    }
+    
+    public static int us(int us) {
+        return us;
+    }   
+
+    public static int us(float us) {
+        return (int)(us);
+    }  
     
 }

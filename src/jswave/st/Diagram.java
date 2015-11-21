@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author lenovo
+ * @author cttmayi
  */
 public class Diagram extends Data{
     public Color color;

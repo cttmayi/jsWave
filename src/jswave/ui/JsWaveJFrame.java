@@ -19,7 +19,7 @@ import jswave.js.Script;
 
 /**
  *
- * @author lenovo
+ * @author cttmayi
  */
 public class JsWaveJFrame extends javax.swing.JFrame {
     /**
@@ -72,7 +72,7 @@ public class JsWaveJFrame extends javax.swing.JFrame {
             jsEnv.loadFile(defaultJs);
         }
 
-        waveJPanel.setTimeRange(0, 8100000);
+        waveJPanel.setTimeRange(0, 100000000);
     }
 
     private void initUI() {

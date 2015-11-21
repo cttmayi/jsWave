@@ -6,12 +6,11 @@
 package jswave.st;
 
 import java.awt.Color;
-import java.util.ArrayList;
 import jswave.Util;
 
 /**
  *
- * @author lenovo
+ * @author cttmayi
  */
 public class Info {
     public int x;

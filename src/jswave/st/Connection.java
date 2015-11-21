@@ -12,7 +12,7 @@ import static jswave.st.Data.ColorMake;
 
 /**
  *
- * @author lenovo
+ * @author cttmayi
  */
 public class Connection {
     
@@ -30,6 +30,9 @@ public class Connection {
         //return (int)((time - ts) * wdt) + xs;
     }
     
+    public int getTime() {
+        return time;
+    }
     
     public static Connection newData(int time, int start, int end, int color) {
         Connection list = new Connection();

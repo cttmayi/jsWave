@@ -22,7 +22,7 @@ import jswave.st.*;
 
 /**
  *
- * @author lenovo
+ * @author cttmayi
  */
 public final class WaveJPanel extends javax.swing.JPanel {
 
@@ -30,31 +30,52 @@ public final class WaveJPanel extends javax.swing.JPanel {
     private final ArrayList<Connection> connectionList = new ArrayList<Connection>();
     private final ArrayList<Info> infoList = new ArrayList<Info>();
     
+    private int timeOffset;
+    
     private int timeX, timeW;
     private int offsetLine;
     private int rangeX1, rangeX2;
 
     private int itemSelected;
     private int itemConnectionMoveSelected;
+    private int itemWaveMoveSelected;
 
     private int timeLimitX1, timeLimitX2; 
 
-    public String funSelectListener = null;
-    public String funRangeListener = null;
-    public String funConnectionListener = null;
+    public String funSelectListener;
+    public String funRangeListener;
+    public String funConnectionListener;
+    public String funWaveListener;
+    public String funClickListener;
 
     private final int offsetX = 100, offsetY = 30;
-    private final Font fontArial = new Font("Arial", Font.PLAIN, 12);
-    private final FontMetrics fontArialMetrics = Toolkit.getDefaultToolkit().getFontMetrics(fontArial);
-    private final int FontHeight = fontArialMetrics.getHeight();
+    private final Font fontArial;
+    private final FontMetrics fontArialMetrics;
+    private final int FontHeight;
     
     private final Color colorSelect = new Color(255,0,0,30);
+    private final Color colorFont = Color.black;    
 
+    /**
+     * Creates new form wavaJPanel
+     */
+    public WaveJPanel() {
+        fontArial = new Font("Arial", Font.PLAIN, 12);
+        this.fontArialMetrics = Toolkit.getDefaultToolkit().getFontMetrics(fontArial);
+        FontHeight = fontArialMetrics.getHeight();
+        clearUI();
+        initComponents();
+        initMouse();
+    }
     
     public void clearUI() {
+        timeOffset = 0;
+        
         funSelectListener = null;
         funRangeListener = null;
         funConnectionListener = null;
+        funWaveListener = null;
+        funClickListener = null;
         
         offsetLine = 0;
 
@@ -63,11 +84,15 @@ public final class WaveJPanel extends javax.swing.JPanel {
 
         itemSelected = -1;
         itemConnectionMoveSelected = -1;
+        itemWaveMoveSelected = -1;
 
         timeLimitX1 = Integer.MAX_VALUE;
         timeLimitX2 = 1;
     }
-    
+
+    public void setTimeRuler(int s) {
+        timeOffset = s;
+    }
     
     public void setTimeRange(int x, int w) {
         timeX = x;
@@ -105,7 +130,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
         return getWidth() - offsetX;
     }
     
-    public void setLine(int line) {
+    public void setOffsetLine(int line) {
         offsetLine = line;
     }
     
@@ -116,11 +141,22 @@ public final class WaveJPanel extends javax.swing.JPanel {
         }
         return selected;
     }
-
+    
+    private int getLine(int y) {
+        int l = -1;
+        for (int i=0; i<waveList.size(); i++) {
+            Data wave = waveList.get(i);
+            if (wave.getY2() > y) {
+               l = i;
+               break;
+            }
+        }
+        return l;
+    }
     
     public int getLineY0(int line) {
         if (line - offsetLine >= 0) {
-            return waveList.get(line - offsetLine).getY2() - waveList.get(line - offsetLine).getHeightMax();
+            return waveList.get(line).getY2() - waveList.get(line).getHeightMax();
         }
         else {
             return offsetY;
@@ -129,7 +165,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
     
     public int getLineY1(int line) {
         if (line - offsetLine >= 0) {
-            return waveList.get(line - offsetLine).getY1();
+            return waveList.get(line).getY1();
         }
         else {
             return offsetY;
@@ -138,19 +174,25 @@ public final class WaveJPanel extends javax.swing.JPanel {
     
     public int getLineY2(int line) {
         if (line - offsetLine >= 0) {
-            return waveList.get(line - offsetLine).getY2();
+            return waveList.get(line).getY2();
         }
         else {
             return offsetY;
         }
     }
-    
-    
+
+    public int getLineM(int line) {
+        return (getLineY0(line) + getLineY2(line))/2;
+    }
+
     private void updateTimeLimit(ArrayList<Integer> time) {
         int x2 = time.get(time.size()-1);
         int x1 = time.get(0);
         if (timeLimitX1 > x1) {
             timeLimitX1 = x1;
+            if (timeLimitX1 < Util.ms(100)) {
+                timeLimitX1 = 0;
+            }
         }
         if (timeLimitX2 < x2) {
             timeLimitX2 = x2;
@@ -175,7 +217,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
     
     public int addHistogram(String name, ArrayList<Integer> time, ArrayList<Integer> time2, 
             ArrayList<Integer> y, ArrayList<Integer> colors, ArrayList<String> names, int heightMax) {
-        Histogram list = Histogram.newData(time, time2, y, colors, names, heightMax + FontHeight);
+        Histogram list = Histogram.newData(time, time2, y, colors, names, heightMax);
         list.setName(name);
         updateTimeLimit(time);
         updateTimeLimit(time2);
@@ -201,54 +243,92 @@ public final class WaveJPanel extends javax.swing.JPanel {
             
             infoList.add(info);
         }
-    } 
-    
-    /**
-     * Creates new form wavaJPanel
-     */
-    public WaveJPanel() {
-        clearUI();
-        initComponents();
-        initMouse();
     }
     
     private void drawName(Graphics g, String name, int y, int height) {
-        g.setColor(Color.red);
-        g.drawString(name, 10, y - height/2);
+        //g.setColor(colorFont);
+        //g.drawString(name, 10, y - height/2);
+        
+        drawString(g, name, 10, y, offsetX - 10, height, 
+                    true, colorFont, null);
+
     }
 
-    public void drawTimeRule(Graphics g, int y) {
-        int[] iS = {1,1000,1000000};
-        String[] sS = {"us", "ms", "s"};
+    private String i2t(long t, int w) {
+        t = t + (long)timeOffset* Util.S;
         
-        int w = timeW / 20;
-        int ww;
-        int s;
-        for (ww=1;true;ww*=10){
-            if (ww > w) {
-                for (s=0; s<iS.length-1; s++) {
-                    if (iS[s] * 100 >= ww) {
-                        break;
+        long h = t /60/60/Util.S;
+        long m = (t - h *60 * 60* Util.S)/60/Util.S;
+        
+        float s = (float)((t - h * 60 * 60 * Util.S- m * 60 * Util.S))/Util.S;
+        
+        if (w >= Util.S) {
+            return String.format("%02d:%02d:%02d", h %24, m, (int)s);
+        }
+        else if ((w >= Util.MS)){
+            return String.format("%02d:%02d:%02.03f", h % 24, m, s);
+        }
+        else {
+            return String.format("%02d:%02d:%02.04f", h % 24, m, s);
+        }
+    }
+    
+    public void drawTimeRuler(Graphics g, int y) {
+        drawName(g, "Time", y, 20);
+        if (timeOffset == 0) {
+            int[] iS = {1,1000,1000000};
+            String[] sS = {"us", "ms", "s"};
+
+            int w = timeW / 10;
+            int ww;
+            int s;
+            for (ww=1;true;ww*=10){
+                if (ww > w) {
+                    for (s=0; s<iS.length-1; s++) {
+                        if (iS[s] * 100 >= ww) {
+                            break;
+                        }
                     }
+                    break;
                 }
-                break;
+            }
+            for (int t=timeX/ww*ww; t<timeX+timeW; t+=ww) {
+                int x = getX(t);
+                if (x >= offsetX) {
+                    g.drawLine(x, y-18, x, y-15);
+                    g.drawString(t/iS[s] + sS[s], x, y-5); 
+                }
             }
         }
-        
-        drawName(g, "Time", y, 20);
-        int d = getX(timeX);
-        
-        for (int t=timeX/ww*ww; t<timeX+timeW; t+=ww) {
-            int x = getX(t);
-                g.drawLine(x, y-18, x, y-15);
-                g.drawString(t/iS[s] + sS[s], x, y-5);
+        else {
+            int w = timeW / 64;
+            int wMin = fontArialMetrics.stringWidth("00:00:00.000000");
+            
+            int ww;
+            int s;
+            for (ww=1;true;ww*=10){
+                if (ww >= w) {
+                    break;
+                }
+            }
+            
+            int sx = Integer.MIN_VALUE;
+            for (int t=timeX/ww*ww; t<timeX+timeW; t+=ww) {
+                
+                int x = getX(t);
+                if (x >= offsetX) {
+                    if (x > sx + wMin){
+                        g.drawLine(x, y-18, x, y-15);
+                        g.drawString(i2t(t, ww), x, y-5);
+                        sx = x;
+                    }
+                }
+            }            
         }
-
         g.drawLine(offsetX, y-18, getWidth(), y-18);
     }
 
     public String trimDownText(String strValue, int maxWidth) {
-
         String strReturn = "";
         int chr_width;
         if (strValue != null && !strValue.equals("") && maxWidth > 2) {
@@ -273,13 +353,14 @@ public final class WaveJPanel extends javax.swing.JPanel {
         drawName(g, list.getName(), y, list.getHeightMax());
         
         list.setY(y - 3, y);
-        
+        list.clearTouch();
         for (int timeId=1; timeId<x.size(); timeId++) {
             if (x.get(timeId) < offsetX) {timeStart = offsetX; continue;}
 
             g.setColor(list.listColor.get(timeId));
             int timeEnd = x.get(timeId);
             g.fillRect(timeStart, y-3, timeEnd - timeStart, 3);
+            list.addTouch(timeId-1, timeStart, y-10, timeEnd, y);
 
             String str = null;
             if (timeId < list.listName.size()) {
@@ -287,7 +368,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
             }
             if (str != null && !str.equals("")) {
                 str = trimDownText(str, timeEnd - timeStart - 8);
-                //g.setColor(Color.BLACK);
+                //g.setColor(colorFont);
                 g.drawString(str, timeStart + 4, y - 5);
             }
             
@@ -326,6 +407,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
         ArrayList<Integer> x2 = list.getX2(timeX, offsetX, wdt);
 
         list.setY(y - list.getHeightMax(), y);
+        list.clearTouch();
         drawName(g, list.getName(), y, list.getHeightMax());
         for (int timeId=0; timeId<x.size(); timeId++) {
             int xx = x.get(timeId);
@@ -340,17 +422,26 @@ public final class WaveJPanel extends javax.swing.JPanel {
             
             int w = xx2 - xx;
             if (w <= 0) w = 1;
-            g.fillRect(xx, y-list.listY.get(timeId), 
-                    w, list.listY.get(timeId));
+            
+            int yh = list.listY.get(timeId);
+            g.fillRect(xx, y-yh, w, yh);
+            list.addTouch(timeId, xx, y-yh, xx+w, y);
             
             String str = null;
             if (timeId < list.listName.size()) {
                 str = list.listName.get(timeId);
-            }            
+            }
             if (str != null && !str.equals("")) {
                 str = trimDownText(str, w - 8);
-                //g.setColor(Color.BLACK);
-                g.drawString(str, xx + 4, y - list.listY.get(timeId) - 2);
+
+                g.setColor(colorFont);
+                
+                int yy = list.listY.get(timeId) - FontHeight;
+                if (yy < FontHeight) {
+                    yy = FontHeight;
+                }
+                
+                g.drawString(str, xx + 4, y - yy - 2);
             }            
         }        
     }
@@ -385,18 +476,60 @@ public final class WaveJPanel extends javax.swing.JPanel {
         }
     }
 
-    private void drawInfo(Graphics g) {
-        for (Info info: infoList) {
-            int w = fontArialMetrics.stringWidth(info.info) + 4;
-            
-            g.setColor(info.bgColor);
-            g.fillRect(info.x - 2, info.y , w, FontHeight + 4);
-            g.setColor(info.fgColor);
-            g.drawString(info.info, info.x, info.y + FontHeight);
+    private void drawString(Graphics g, String name, int px, int py, int pw, int ph, boolean up, Color fgColor, Color bgColor) {
+
+        String[] infos = name.split("\n");
+        int length = ph/FontHeight;
+        
+        if (length > infos.length) {
+            length = infos.length;
+        }
+        int h = FontHeight * length;
+
+        int w = 0;
+        for (int i=0; i<length; i++) {
+            int t = fontArialMetrics.stringWidth(infos[i]) + 4;
+            if (w < t) {
+                w = t;
+            }
+        }
+
+        if (w > pw) {
+            w = pw;
+        }
+        
+        int x = px;
+        int y = py;
+
+        if (up == true) {
+            y = y - h - 2;
+        }
+
+        if (bgColor != null) {
+            g.setColor(bgColor);
+            g.fillRect(x - 2, y , w, h + 2);
+        }
+        for (int i=0; i< length; i++) {
+            g.setColor(fgColor);
+            String str;
+            if (w == pw) {
+                str = trimDownText(infos[i], w);
+            }
+            else {
+                str = infos[i];
+            }
+
+            g.drawString(str, x, y + FontHeight * (i+1));
         }
     }
-    
-    
+
+    private void drawInfo(Graphics g) {
+        for (Info info: infoList) {
+            drawString(g, info.info, getX(info.x), getLineM(info.y), Integer.MAX_VALUE, Integer.MAX_VALUE, 
+                    false, info.fgColor, info.bgColor);
+        }
+    }
+
     private void drawFrame(Graphics g) {
         g.setColor(Color.black);
         g.drawLine(offsetX - 3, 0, offsetX - 3, getHeight());
@@ -409,13 +542,18 @@ public final class WaveJPanel extends javax.swing.JPanel {
             g.fillRect(rangeX1, 0, rangeX2 - rangeX1, getHeight());
             int t1 = getTime(rangeX1);
             int t2 = getTime(rangeX2);
-            
             int t = t2 - t1;
+            g.setColor(Color.blue);
+            if (timeOffset == 0) {
+                g.drawString(Util.getTimeString(t) + "  (" + Util.getTimeString(t1) + " - " + Util.getTimeString(t2) + ")", 
+                        rangeX1, offsetY);
+            }
+            else {
+                g.drawString(String.format("%s (%s - %s)", Util.getTimeString(t), i2t(t1, Util.MS), i2t(t2, Util.MS)),
+                        rangeX1, offsetY);
+                
 
-            g.setColor(Color.blue);  
-            g.drawString(Util.getTimeString(t) + "  (" + Util.getTimeString(t1) + " - " + Util.getTimeString(t2) + ")", 
-                    rangeX1, offsetY);
-        
+            }
         }
 
         int y0 = getLineY0(itemSelected);
@@ -423,13 +561,12 @@ public final class WaveJPanel extends javax.swing.JPanel {
         if (itemSelected >= 0 && itemSelected < waveList.size() && y2 != y0) {
             g.setColor(colorSelect);
             g.fillRect(0, y0 - gap/2, getWidth(), y2 - y0 + gap);
-        }        
-
+        }
     }
     
     private void drawSplitLine(Graphics g, int y) {
         g.setColor(colorSelect);
-        g.drawLine(offsetX, y, getWidth(), y);
+        g.drawLine(0, y, getWidth(), y);
     }
     
     @Override
@@ -441,7 +578,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
         double wdt = (double)getW() / timeW;
         int gap = 5;
 
-        drawTimeRule(g, 20);
+        drawTimeRuler(g, 20);
         
         int y = offsetY;
 
@@ -449,12 +586,10 @@ public final class WaveJPanel extends javax.swing.JPanel {
         for (int id=offsetLine; id<waveList.size(); id ++ ) {
             Data list = waveList.get(id);
             y += list.getHeightMax();
-
+            drawSplitLine(g, y);
             if (y < getHeight()) {
-
                 if (list.type == Data.LINE) {
                     drawLine(g, y, (Line)list, wdt);
-                    
                 }
                 else if (list.type == Data.DIAGRAM) {
                     //drawDiagram(g, y, (Diagram)list, wdt);
@@ -466,12 +601,11 @@ public final class WaveJPanel extends javax.swing.JPanel {
             else {
                 list.setY(y + gap, y + gap);
             }
-            drawSplitLine(g, y + 2);
             y += gap;
         }
         drawConnection(g, wdt);
 
-       drawInfo(g);
+        drawInfo(g);
         drawFrame(g);
         
         
@@ -509,12 +643,69 @@ public final class WaveJPanel extends javax.swing.JPanel {
         return (x > x1 && x < x2 &&  y > l1 && y < l2);
     }
     
+    void doMoveCallback(int x, int y) {
+        if (funConnectionListener != null) {
+            int id;
+            int size = connectionList.size();
+            for (id =0; id<size; id++) {
+                if (inConnectionRange(id, x, y) ) {
+                    break;
+                }
+            }
+            if (id == size) id = -1;
+            if (itemConnectionMoveSelected != id) {
+                itemConnectionMoveSelected = id;
+                if (id > 0) {
+                    JsEnv.getJsEnv(null).invokeFunction(funConnectionListener, id, connectionList.get(id).getTime(), getLine(y));
+                    repaint();
+                    return;
+                }
+                else {
+                    JsEnv.getJsEnv(null).invokeFunction(funConnectionListener, id, getTime(x), getLine(y));
+                    repaint();
+                }
+            }
+        }
+        
+        if (funWaveListener != null) {
+            int i;
+            int size = waveList.size();
+            for (i=0; i<size; i++) {
+                Data wave = waveList.get(i);
+                int id = wave.getCallbackId(x, y);
+                if (id >= 0) {
+                    itemWaveMoveSelected = id;
+                    JsEnv.getJsEnv(null).invokeFunction(funWaveListener, i, id, getTime(x));
+                    repaint();
+                    return;
+                }
+            }
+            if (itemWaveMoveSelected != -1) {
+                itemWaveMoveSelected = -1;
+                JsEnv.getJsEnv(null).invokeFunction(funWaveListener, -1, -1, getTime(x));
+                repaint();
+            }
+        }
+        
+    }
+
+    void doClickCallback(int id, int x, int y) {
+        if (funClickListener != null) {
+            Data wave = waveList.get(id);
+            int mid = wave.getCallbackId(x, y);
+            //System.out.println(id);
+            if (mid > 0) {
+                JsEnv.getJsEnv(null).invokeFunction(funClickListener, id, mid, getTime(x));
+                repaint();
+            }
+        }
+    }
+    
+    
     private void initMouse() {
         MouseAdapter mouseListen = new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                //System.out.println("Drag X:" + e.getX() + " Y:" +e.getY());
-                
                 rangeX2 = e.getX();
                 if (rangeX2 > getWidth()) {
                     rangeX2 = getWidth();
@@ -522,30 +713,11 @@ public final class WaveJPanel extends javax.swing.JPanel {
                 repaint();
                 super.mouseDragged(e);  
             }
+            
             @Override
             public void mouseMoved(MouseEvent e) {
-                //System.out.println("Move X:" + e.getX() + " Y:" +e.getY());
+                doMoveCallback(e.getX(), e.getY());
 
-                
-                int id;
-                int size = connectionList.size();
-                for (id =0; id<size; id++) {
-                    if (inConnectionRange(id, e.getX(), e.getY()) ) {
-                        break;
-                    }
-                }
-                if (id == size) id = -1;
-                
-                if (itemConnectionMoveSelected != id) {
-                    itemConnectionMoveSelected = id;
-                    if (funConnectionListener != null) {
-                        JsEnv.getJsEnv(null).invokeFunction(funConnectionListener, id, e.getX(), e.getY());
-                        repaint();
-                    }
-                }
-                    
-                    
-                    
                 super.mouseMoved(e);  
             }
 
@@ -562,22 +734,16 @@ public final class WaveJPanel extends javax.swing.JPanel {
             
             @Override
             public void mouseReleased(MouseEvent e) {
-                //System.out.println("Release X:" + e.getX() + " Y:" +e.getY());
-
                 if (funRangeListener != null) {
                     if (rangeX1 >= 0 && rangeX2 >= 0 && rangeX1 <= rangeX2) {
                         JsEnv.getJsEnv(null).invokeFunction(funRangeListener, itemSelected, getTime(rangeX1), getTime(rangeX2));
                     }
                 }
-
-                //repaint();
                 super.mouseReleased(e);              
             }
             
             @Override
             public void mouseClicked(MouseEvent e) {
-                //System.out.println("Clicked X:" + e.getX() + " Y:" +e.getY());
-                //int x = e.getX();
                 int y = e.getY();
                 int id;
                 for (id=0; id<waveList.size(); id++) {
@@ -585,29 +751,24 @@ public final class WaveJPanel extends javax.swing.JPanel {
                         break;
                     }
                 }
-                
-                if (id == waveList.size()) {
-                    id = -1;
-                }
-                
-                if (itemSelected != id){
-                    itemSelected = id;
-                    repaint();
-                    if (funSelectListener != null) {
-                        if (rangeX1 > 0 && rangeX2 > 0) {
-                            JsEnv.getJsEnv(null).invokeFunction(funSelectListener, itemSelected, getTime(rangeX1), getTime(rangeX2));
-                        }
-                        else {
-                            JsEnv.getJsEnv(null).invokeFunction(funSelectListener, itemSelected, -1, -1);
+                if (id != waveList.size()) {
+                    if (itemSelected != id){
+                        itemSelected = id;
+                        repaint();
+                        if (funSelectListener != null) {
+                            if (rangeX1 > 0 && rangeX2 > 0) {
+                                JsEnv.getJsEnv(null).invokeFunction(funSelectListener, itemSelected, getTime(rangeX1), getTime(rangeX2));
+                            }
                         }
                     }
+                    else {
+                        doClickCallback(id, e.getX(), e.getY());
+                    }
                 }
-
                 super.mouseClicked(e); 
             }
             @Override
             public void mouseWheelMoved(MouseWheelEvent e){
-                //System.out.println("Wheel: " + e.getWheelRotation());
                 if (offsetLine + e.getWheelRotation() >= 0) {
                     offsetLine += e.getWheelRotation();
                     repaint();

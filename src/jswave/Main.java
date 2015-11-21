@@ -9,7 +9,7 @@ import jswave.ui.JsWaveJFrame;
 
 /**
  *
- * @author lenovo
+ * @author cttmayi
  */
 public class Main {
 

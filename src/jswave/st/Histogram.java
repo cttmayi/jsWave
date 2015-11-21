@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author lenovo
+ * @author cttmayi
  */
 public class Histogram extends Data{
     public int width;

@@ -11,7 +11,7 @@ import jswave.Util;
 
 /**
  *
- * @author lenovo
+ * @author cttmayi
  */
 public class Data {
     
@@ -21,13 +21,19 @@ public class Data {
     public int type;
     private String name = null;
     
+    private ArrayList<Touch> touchs;
     
     private int heightMax = 20;
     
     private int yStart = 0;
     private int yEnd = 0;
     
-    
+    private boolean isCallbackEnable;
+
+    public Data() {
+        this.isCallbackEnable = true;
+        this.touchs = new ArrayList<Touch>();
+    }
     
     public void setHeightMax(int height) {
         heightMax = height;
@@ -37,10 +43,43 @@ public class Data {
         return heightMax;
     }
     
+    public void clearTouch() {
+        touchs.clear();
+    }
+    
+    public void addTouch (int id, int x1, int y1, int x2, int y2) {
+        touchs.add(Touch.newData(id, x1, y1, x2, y2));
+    }
+    
+    
+    public void setCallbackEnable(boolean enable) {
+        isCallbackEnable = enable;
+    }
+    
+    public int getCallbackId(int x, int y) {
+        int id = -1;
+        if (isCallbackEnable && getY0() <= y && y <= getY2()) {
+            for (Touch touch: touchs) {
+                if (touch.isInRange(x, y)) {
+                    id =  touch.getId();
+                }
+                else if (id >=0) {
+                    break;
+                }
+            }
+        }
+
+        return id;
+    }
+    
     public void setY(int start, int end) {
         yStart = start;
         yEnd = end;
     }
+
+    public int getY0() {
+        return yEnd - heightMax;
+    }    
     
     public int getY1() {
         return yStart;
@@ -50,6 +89,9 @@ public class Data {
         return yEnd;
     }
     
+    public int getYM() {
+        return (yStart + yEnd)/2;
+    }    
     
     public void setTime(ArrayList<Integer> time) {
         listTime = time;    
