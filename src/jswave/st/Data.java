@@ -23,7 +23,7 @@ public class Data {
     
     private ArrayList<Touch> touchs;
     
-    private int heightMax = 20;
+    private int heightMax = 10;
     
     private int yStart = 0;
     private int yEnd = 0;
@@ -36,7 +36,9 @@ public class Data {
     }
     
     public void setHeightMax(int height) {
-        heightMax = height;
+        if (heightMax < height) {
+            heightMax = height;
+        }
     }
     
     public int getHeightMax() {

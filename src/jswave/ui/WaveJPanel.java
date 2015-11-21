@@ -49,9 +49,6 @@ public final class WaveJPanel extends javax.swing.JPanel {
     public String funClickListener;
 
     private final int offsetX = 100, offsetY = 30;
-    private final Font fontArial;
-    private final FontMetrics fontArialMetrics;
-    private final int FontHeight;
     
     private final Color colorSelect = new Color(255,0,0,30);
     private final Color colorFont = Color.black;    
@@ -60,9 +57,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
      * Creates new form wavaJPanel
      */
     public WaveJPanel() {
-        fontArial = new Font("Arial", Font.PLAIN, 12);
-        this.fontArialMetrics = Toolkit.getDefaultToolkit().getFontMetrics(fontArial);
-        FontHeight = fontArialMetrics.getHeight();
+
         clearUI();
         initComponents();
         initMouse();
@@ -199,8 +194,8 @@ public final class WaveJPanel extends javax.swing.JPanel {
         }    
     }
     
-    public int addLine(String name, ArrayList<Integer> time, ArrayList<Integer> colors, ArrayList<String> names) {
-        Line list = Line.newData(time, colors, names);
+    public int addLine(String name, ArrayList<Integer> time, ArrayList<Integer> colors, ArrayList<Integer> ys, ArrayList<String> names) {
+        Line list = Line.newData(time, colors, ys, names);
         list.setName(name);
         updateTimeLimit(time);
 
@@ -302,7 +297,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
         }
         else {
             int w = timeW / 64;
-            int wMin = fontArialMetrics.stringWidth("00:00:00.000000");
+            int wMin = Util.stringWidth("00:00:00.000000");
             
             int ww;
             int s;
@@ -334,7 +329,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
         if (strValue != null && !strValue.equals("") && maxWidth > 2) {
             for (int i = strValue.length(); i > -1; i--) {
                 strReturn = strValue.substring(0, i);
-                chr_width = fontArialMetrics.stringWidth(strReturn);
+                chr_width = Util.stringWidth(strReturn);
                 if (chr_width < maxWidth) {
                     break;
                 }
@@ -352,25 +347,31 @@ public final class WaveJPanel extends javax.swing.JPanel {
 
         drawName(g, list.getName(), y, list.getHeightMax());
         
-        list.setY(y - 3, y);
+        list.setY(y - Line.lineHeight, y);
         list.clearTouch();
         for (int timeId=1; timeId<x.size(); timeId++) {
             if (x.get(timeId) < offsetX) {timeStart = offsetX; continue;}
 
             g.setColor(list.listColor.get(timeId));
             int timeEnd = x.get(timeId);
-            g.fillRect(timeStart, y-3, timeEnd - timeStart, 3);
-            list.addTouch(timeId-1, timeStart, y-10, timeEnd, y);
+            
+            int yy = y;
+            if (timeId < list.listY.size()) {
+                yy = y - list.listY.get(timeId);
+            }
+            g.fillRect(timeStart, yy-Line.lineHeight, timeEnd - timeStart, Line.lineHeight);
+            list.addTouch(timeId-1, timeStart, yy-10, timeEnd, yy);
 
             String str = null;
             if (timeId < list.listName.size()) {
                 str = list.listName.get(timeId);
+                if (str != null && !str.equals("")) {
+                    str = trimDownText(str, timeEnd - timeStart - 8);
+                    //g.setColor(colorFont);
+                    g.drawString(str, timeStart + 4, yy - 5);
+                }
             }
-            if (str != null && !str.equals("")) {
-                str = trimDownText(str, timeEnd - timeStart - 8);
-                //g.setColor(colorFont);
-                g.drawString(str, timeStart + 4, y - 5);
-            }
+
             
             timeStart = timeEnd;
             
@@ -436,9 +437,9 @@ public final class WaveJPanel extends javax.swing.JPanel {
 
                 g.setColor(colorFont);
                 
-                int yy = list.listY.get(timeId) - FontHeight;
-                if (yy < FontHeight) {
-                    yy = FontHeight;
+                int yy = list.listY.get(timeId) - Util.FontHeight;
+                if (yy < Util.FontHeight) {
+                    yy = Util.FontHeight;
                 }
                 
                 g.drawString(str, xx + 4, y - yy - 2);
@@ -479,16 +480,16 @@ public final class WaveJPanel extends javax.swing.JPanel {
     private void drawString(Graphics g, String name, int px, int py, int pw, int ph, boolean up, Color fgColor, Color bgColor) {
 
         String[] infos = name.split("\n");
-        int length = ph/FontHeight;
+        int length = ph/Util.FontHeight;
         
         if (length > infos.length) {
             length = infos.length;
         }
-        int h = FontHeight * length;
+        int h = Util.FontHeight * length;
 
         int w = 0;
         for (int i=0; i<length; i++) {
-            int t = fontArialMetrics.stringWidth(infos[i]) + 4;
+            int t = Util.stringWidth(infos[i]) + 4;
             if (w < t) {
                 w = t;
             }
@@ -519,7 +520,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
                 str = infos[i];
             }
 
-            g.drawString(str, x, y + FontHeight * (i+1));
+            g.drawString(str, x, y + Util.FontHeight * (i+1));
         }
     }
 
@@ -573,7 +574,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
     public void paintComponent(Graphics g){ 
         super.paintComponent(g); 
         
-        g.setFont(fontArial);
+        g.setFont(Util.FontArial);
         
         double wdt = (double)getW() / timeW;
         int gap = 5;

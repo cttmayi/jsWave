@@ -79,17 +79,16 @@ public class Script {
         }
     }    
     
-    public int addLine(String name, ArrayList<Number> times, ArrayList<Number> colors, ArrayList<String> names) {
-        
+    public int addLine(String name, ArrayList<Number> times, ArrayList<Number> colors, ArrayList<Number> ys, ArrayList<String> names) {
         ArrayList<Integer> timei = Util.an2i(times);
         ArrayList<Integer> colori = Util.an2i(colors);
-        
-        //System.out.println("TIME TYPE:" + times.get(0).getClass().getName());
+        ArrayList<Integer> yi = Util.an2i(ys);
+        //System.out.println("TIME TYPE:" + ys.getClass().getName());
         //System.out.println("COLOR TYPE:"+ colors.get(0).getClass().getName());
         //System.out.println(names.getClass().getName());
         
         if (!times.isEmpty()) {
-            return this.frame.getPanel().addLine(name, timei, colori, names);
+            return this.frame.getPanel().addLine(name, timei, colori, yi, names);
         }
         return -1;
     }

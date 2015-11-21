@@ -57,15 +57,14 @@ public class JsWaveJFrame extends javax.swing.JFrame {
                 if (file[i].isDirectory()) {
                 }
                 else {
-                    System.out.println(file[i].getAbsolutePath());
                     jsEnv.loadFile(file[i].getAbsolutePath());
                 }  
             }
         }
         
-        if (Util.getPara(Util.PATH) != null) {
-            if (Util.isFileExist(Util.getPara(Util.PATH))) {
-                jsEnv.loadFile(Util.getPara(Util.PATH));
+        if (Util.getPara(Util.PARA_PATH) != null) {
+            if (Util.isFileExist(Util.getPara(Util.PARA_PATH))) {
+                jsEnv.loadFile(Util.getPara(Util.PARA_PATH));
             }
         }
         else if (Util.isFileExist(defaultJs)){

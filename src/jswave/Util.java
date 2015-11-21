@@ -6,6 +6,9 @@
 package jswave;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Toolkit;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -17,7 +20,17 @@ public class Util {
     
     public static ArrayList<String> paraList = new ArrayList<String>();
 
-    public static int PATH = 0; 
+    public static int PARA_PATH = 0; 
+
+    public static final Font FontArial = new Font("Arial", Font.PLAIN, 12);
+    private static final FontMetrics fontArialMetrics = Toolkit.getDefaultToolkit().getFontMetrics(FontArial);;
+    public static final int FontHeight = fontArialMetrics.getHeight();
+    
+    public static int stringWidth(String str) {
+        return fontArialMetrics.stringWidth(str);
+    }
+    
+    
     
     public static void addPara(String para){
         paraList.add(para);
