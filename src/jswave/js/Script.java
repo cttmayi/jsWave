@@ -83,9 +83,18 @@ public class Script {
         ArrayList<Integer> timei = Util.an2i(times);
         ArrayList<Integer> colori = Util.an2i(colors);
         ArrayList<Integer> yi = Util.an2i(ys);
-        //System.out.println("TIME TYPE:" + ys.getClass().getName());
-        //System.out.println("COLOR TYPE:"+ colors.get(0).getClass().getName());
-        //System.out.println(names.getClass().getName());
+
+        if (Util.isDebug) {
+            System.out.println("addLine:" + name);
+            int time = Integer.MIN_VALUE;
+            
+            for (int i=0; i<timei.size(); i++) {
+                if (time > timei.get(i)) {
+                    System.out.println("[ERROR] ROW:" + i + " ORDER ERROR!");
+                }
+                time = timei.get(i);
+            }
+        }
         
         if (!times.isEmpty()) {
             return this.frame.getPanel().addLine(name, timei, colori, yi, names);
@@ -100,6 +109,26 @@ public class Script {
         ArrayList<Integer> timei2 = Util.an2i(times2);
         ArrayList<Integer> yi = Util.an2i(ys);
         ArrayList<Integer> colori = Util.an2i(colors);
+        
+        if (Util.isDebug) {
+            System.out.println("addHistogram:" + name);
+            int time = Integer.MIN_VALUE;
+            
+            for (int i=0; i<timei.size(); i++) {
+                if (time > timei.get(i)) {
+                    System.out.println("[ERROR] ROW:" + i + " ORDER ERROR!");
+                }
+                time = timei2.get(i);
+                
+                if (timei.get(i) > timei2.get(i)) {
+                    System.out.println("[ERROR] ROW:" + i + " SIZE ERROR!");
+                }
+                
+                if (yi.get(i) > heightMax) {
+                    System.out.println("[ERROR] Y:" + i + " HEIGHT ERROR!");
+                }
+            }
+        }
         
         if (!times.isEmpty()) {   
             return this.frame.getPanel().addHistogram(name, timei, timei2, yi, colori, names, heightMax);
@@ -131,6 +160,9 @@ public class Script {
         this.frame.getPanel().setInfo(xi, yi, names, fi, bi);
     }
     
+    public void debug(Number debug) {
+        Util.isDebug = (debug.intValue() != 0);
+    }
     
     public void print(String str) {
         System.out.println(str);

@@ -7,10 +7,7 @@ package jswave.ui;
 
 
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -226,6 +223,9 @@ public final class WaveJPanel extends javax.swing.JPanel {
             Connection data = Connection.newData(time, start, end, color);
             connectionList.add(data);
             return connectionList.size() - 1; 
+        }
+        else if (Util.isDebug){
+            System.out.println("[ERROR] START:" + start + " END:" + end + " LINE ERROR! (>=" + waveList.size() + ")");
         }
         return -1;
     }

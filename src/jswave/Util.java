@@ -26,6 +26,8 @@ public class Util {
     private static final FontMetrics fontArialMetrics = Toolkit.getDefaultToolkit().getFontMetrics(FontArial);;
     public static final int FontHeight = fontArialMetrics.getHeight();
     
+    public static boolean isDebug = false;
+    
     public static int stringWidth(String str) {
         return fontArialMetrics.stringWidth(str);
     }
