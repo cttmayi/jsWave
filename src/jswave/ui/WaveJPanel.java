@@ -79,7 +79,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
         itemWaveMoveSelected = -1;
 
         timeLimitX1 = Integer.MAX_VALUE;
-        timeLimitX2 = 1;
+        timeLimitX2 = Integer.MIN_VALUE;
     }
 
     public void setTimeRuler(int s) {
@@ -90,13 +90,16 @@ public final class WaveJPanel extends javax.swing.JPanel {
         timeX = x;
         timeW = w;
         
-        int max = (int)((timeLimitX2 - timeLimitX1) * 1.05);
+        int lx1 = timeLimitX1 - (int)((timeLimitX2 - timeLimitX1) * 0.1);
+        int lx2 = timeLimitX2 + (int)((timeLimitX2 - timeLimitX1) * 0.1);
+
+        int max = (int)(lx2 - lx1);
         int min = 800;
         
-        if (timeX < timeLimitX1) timeX = timeLimitX1;
+        if (timeX < lx1) timeX = lx1;
         if (timeW <= min) timeW = min;
         if (max < timeW) timeW = max;
-        if (timeX + timeW > timeLimitX1 + max) timeX = timeLimitX1 + max - timeW;
+        if (timeX + timeW > lx1 + max) timeX = lx1 + max - timeW;
         
         repaint();
     }
@@ -182,9 +185,6 @@ public final class WaveJPanel extends javax.swing.JPanel {
         int x1 = time.get(0);
         if (timeLimitX1 > x1) {
             timeLimitX1 = x1;
-            if (timeLimitX1 < Util.ms(100)) {
-                timeLimitX1 = 0;
-            }
         }
         if (timeLimitX2 < x2) {
             timeLimitX2 = x2;
@@ -269,6 +269,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
     }
     
     public void drawTimeRuler(Graphics g, int y) {
+        y = y + 30;
         drawName(g, "Time", y, 20);
         if (timeOffset == 0) {
             int[] iS = {1,1000,1000000};
@@ -292,6 +293,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
                 if (x >= offsetX) {
                     g.drawLine(x, y-18, x, y-15);
                     g.drawString(t/iS[s] + sS[s], x, y-5); 
+                    g.drawString(i2t(t, ww), x, y-20);
                 }
             }
         }
@@ -579,7 +581,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
         double wdt = (double)getW() / timeW;
         int gap = 5;
 
-        drawTimeRuler(g, 20);
+        drawTimeRuler(g, 0);
         
         int y = offsetY;
 
