@@ -74,6 +74,27 @@ function histogram_0() {
 }
 
 
+function histogram_1() {
+	var time = ArrayList();
+	var time2 = ArrayList();
+	var colors = ArrayList();
+	var ys = ArrayList();
+	var names = ArrayList();
+	
+	time.add(ms(-1000)); time2.add(ms(1.5)); ys.add(40.0);  colors.add(red); names.add("3");
+	//time.add(ms(2)); time2.add(ms(3)); ys.add(40.0);  colors.add(red); names.add("3");
+	
+	//time.add(ms(4)); time2.add(ms(4)); ys.add(40.0);  colors.add(red); names.add("3");
+	time.add(s(17)+ms(5)); time2.add(s(17)+ms(5)); ys.add(40.0);  colors.add(red); names.add("3");
+	//time.add(ms(4)); time2.add(ms(5)); ys.add(50.0);  colors.add(green); names.add("3");
+	//time.add(s(2)); time2.add(s(3)); ys.add(40.0);  colors.add(yellow); names.add("3");
+	//time.add(s(4)); time2.add(s(13)); ys.add(40.0); colors.add(yellow); names.add("2");
+	//time.add(s(40)); time2.add(s(73)); ys.add(30.0); colors.add(red); names.add("2");
+
+	var script = Script();
+	script.addHistogram("histogram_1", time, time2, ys, colors, names, 50);
+}
+
 function line_0() {
 	var times = ArrayList();
 	var colors = ArrayList();	
@@ -95,7 +116,9 @@ function line_0() {
 function main(){
 	var script = Script();
 	
-	script.setTimeRuler(3600 * 25);
+	script.debug(1);
+	
+	//script.setTimeRuler(3600 * 25);
 	
 	script.setRangeListener("range");
 	script.setSelectListener("range");
@@ -103,10 +126,10 @@ function main(){
 	script.setWaveListener("wave");
 	script.setClickListener("click");
 	
-	histogram_0()
+	histogram_1()
 	histogram_0()
 	line_0()
-	line_0()
+	//line_0()
 
 	script.addConnection(s(1), 1, 2, 0);
 	script.addConnection(s(2), 2, 3, 0);
