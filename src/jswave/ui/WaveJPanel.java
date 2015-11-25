@@ -271,57 +271,35 @@ public final class WaveJPanel extends javax.swing.JPanel {
     public void drawTimeRuler(Graphics g, int y) {
         y = y + 30;
         drawName(g, "Time", y, 20);
-        if (timeOffset == 0) {
-            int[] iS = {1,1000,1000000};
-            String[] sS = {"us", "ms", "s"};
 
-            int w = timeW / 10;
-            int ww;
-            int s;
-            for (ww=1;true;ww*=10){
-                if (ww > w) {
-                    for (s=0; s<iS.length-1; s++) {
-                        if (iS[s] * 100 >= ww) {
-                            break;
-                        }
+        int[] iS = {1,1000,1000000};
+        String[] sS = {"us", "ms", "s"};
+
+        int w = timeW / 10;
+        int ww;
+        int s;
+        for (ww=1;true;ww*=10){
+            if (ww > w) {
+                for (s=0; s<iS.length-1; s++) {
+                    if (iS[s] * 100 >= ww) {
+                        break;
                     }
-                    break;
                 }
+                break;
             }
-            for (int t=timeX/ww*ww; t<timeX+timeW; t+=ww) {
-                int x = getX(t);
-                if (x >= offsetX) {
-                    g.drawLine(x, y-18, x, y-15);
-                    g.drawString(t/iS[s] + sS[s], x, y-5); 
+        }
+        for (int t=timeX/ww*ww; t<timeX+timeW; t+=ww) {
+            int x = getX(t);
+            if (x >= offsetX) {
+                g.drawLine(x, y-18, x, y-15);
+                g.drawString(t/iS[s] + sS[s], x, y-5); 
+                if (timeOffset != 0) {
                     g.drawString(i2t(t, ww), x, y-20);
                 }
             }
         }
-        else {
-            int w = timeW / 64;
-            int wMin = Util.stringWidth("00:00:00.000000");
-            
-            int ww;
-            int s;
-            for (ww=1;true;ww*=10){
-                if (ww >= w) {
-                    break;
-                }
-            }
-            
-            int sx = Integer.MIN_VALUE;
-            for (int t=timeX/ww*ww; t<timeX+timeW; t+=ww) {
-                
-                int x = getX(t);
-                if (x >= offsetX) {
-                    if (x > sx + wMin){
-                        g.drawLine(x, y-18, x, y-15);
-                        g.drawString(i2t(t, ww), x, y-5);
-                        sx = x;
-                    }
-                }
-            }            
-        }
+
+
         g.drawLine(offsetX, y-18, getWidth(), y-18);
     }
 
