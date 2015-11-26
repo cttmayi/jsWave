@@ -27,7 +27,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
     private final ArrayList<Connection> connectionList = new ArrayList<Connection>();
     private final ArrayList<Info> infoList = new ArrayList<Info>();
     
-    private int timeOffset;
+    private long timeOffset;
     
     private int timeX, timeW;
     private int offsetLine;
@@ -45,7 +45,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
     public String funWaveListener;
     public String funClickListener;
 
-    private final int offsetX = 100, offsetY = 30;
+    private final int offsetX = 100, offsetY = 40;
     
     private final Color colorSelect = new Color(255,0,0,30);
     private final Color colorFont = Color.black;    
@@ -82,8 +82,8 @@ public final class WaveJPanel extends javax.swing.JPanel {
         timeLimitX2 = Integer.MIN_VALUE;
     }
 
-    public void setTimeRuler(int s) {
-        timeOffset = s;
+    public void setTimeRuler(long us) {
+        timeOffset = us;
     }
     
     public void setTimeRange(int x, int w) {
@@ -250,7 +250,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
     }
 
     private String i2t(long t, int w) {
-        t = t + (long)timeOffset* Util.S;
+        t = t + timeOffset;
         
         long h = t /60/60/Util.S;
         long m = (t - h *60 * 60* Util.S)/60/Util.S;
@@ -258,7 +258,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
         float s = (float)((t - h * 60 * 60 * Util.S- m * 60 * Util.S))/Util.S;
         
         if (w >= Util.S) {
-            return String.format("%02d:%02d:%02d", h %24, m, (int)s);
+            return String.format("%02d:%02d:%02.03f", h %24, m, s);
         }
         else if ((w >= Util.MS)){
             return String.format("%02d:%02d:%02.03f", h % 24, m, s);
@@ -298,7 +298,6 @@ public final class WaveJPanel extends javax.swing.JPanel {
                 }
             }
         }
-
 
         g.drawLine(offsetX, y-18, getWidth(), y-18);
     }

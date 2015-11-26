@@ -30,7 +30,7 @@ public class Script {
     }
     
     public void setTimeRuler(Number s) {
-        this.frame.getPanel().setTimeRuler(s.intValue());
+        this.frame.getPanel().setTimeRuler(s.longValue());
     }
     
     
