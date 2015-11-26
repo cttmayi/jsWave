@@ -1,3 +1,4 @@
 /dist/
 /build/
-*.log
+/*.log
+/nbproject/private/private.xml
