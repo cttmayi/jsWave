@@ -118,7 +118,7 @@ function main(){
 	
 	script.debug(1);
 	
-	script.setTimeRuler(3600 * 25);
+	script.setTimeRuler(s(3600 * 25) + ms(521));
 	
 	script.setRangeListener("range");
 	script.setSelectListener("range");
