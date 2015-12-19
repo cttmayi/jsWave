@@ -6,15 +6,14 @@
 package jswave.st;
 
 import java.awt.Color;
-import java.util.ArrayList;
 import jswave.Util;
-import static jswave.st.Data.ColorMake;
+
 
 /**
  *
  * @author cttmayi
  */
-public class Connection {
+public class Connection extends Widget{
     
     public int time;
     public int start;

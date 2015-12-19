@@ -6,7 +6,9 @@
 package jswave.st;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.util.ArrayList;
+import jswave.Util;
 
 /**
  *
@@ -47,5 +49,51 @@ public class Histogram extends Data{
         list.listName = names;
         return list;
     }    
+
+    public void draw(Graphics g, int y, double wdt) {
+        //System.out.println("Histogram:" + y);
+        ArrayList<Integer> x = getX(timeX, offsetX, wdt);
+        ArrayList<Integer> x2 = getX2(timeX, offsetX, wdt);
+
+        setY(y - getHeightMax(), y);
+        clearTouch();
+        drawName(g, getName(), y, getHeightMax());
+        for (int timeId=0; timeId<x.size(); timeId++) {
+            int xx = x.get(timeId);
+            int xx2 = x2.get(timeId);
+            
+            if (xx > screenW) break;
+            if (xx2 < offsetX) continue;
+            
+            if (xx < offsetX) xx = offsetX;
+            
+            g.setColor(listColor.get(timeId));
+            
+            int w = xx2 - xx;
+            if (w <= 0) w = 1;
+            
+            int yh = listY.get(timeId);
+            g.fillRect(xx, y-yh, w, yh);
+            addTouch(timeId, xx, y-yh, xx+w, y);
+            
+            String str = null;
+            if (timeId < listName.size()) {
+                str = listName.get(timeId);
+            }
+            if (str != null && !str.equals("")) {
+                str = Util.trimDownText(str, w - 8);
+
+                g.setColor(colorFont);
+                
+                int yy = listY.get(timeId) - Util.FontHeight;
+                if (yy < Util.FontHeight) {
+                    yy = Util.FontHeight;
+                }
+                
+                g.drawString(str, xx + 4, y - yy - 2);
+            }            
+        }        
+    }
+    
     
 }

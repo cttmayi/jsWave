@@ -29,9 +29,14 @@ public class Script {
         this.frame = frame;
     }
     
-    public void setTimeRuler(Number s) {
-        this.frame.getPanel().setTimeRuler(s.longValue());
+    public void setTimeRuler(Number us, Number us2) {
+        this.frame.getPanel().setTimeRuler(us.longValue(), us2.longValue());
     }
+    
+    public void setTimePoint(Number us) {
+        this.frame.getPanel().setTimePoint(us.intValue());
+    }
+    
     
     
     public void setRangeListener(String name) {
@@ -78,6 +83,11 @@ public class Script {
             this.frame.getPanel().funClickListener = name;
         }
     }    
+    
+    public int addGroup(int start, int end, int colori, int enable) {
+        return this.frame.getPanel().addGroup(start, end, colori, enable > 0);
+    }
+    
     
     public int addLine(String name, ArrayList<Number> times, ArrayList<Number> colors, ArrayList<Number> ys, ArrayList<String> names) {
         ArrayList<Integer> timei = Util.an2i(times);

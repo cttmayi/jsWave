@@ -140,6 +140,21 @@ public class Util {
         return filePath;  
     } 
 
+    public static String trimDownText(String strValue, int maxWidth) {
+        String strReturn = "";
+        int chr_width;
+        if (strValue != null && !strValue.equals("") && maxWidth > 2) {
+            for (int i = strValue.length(); i > -1; i--) {
+                strReturn = strValue.substring(0, i);
+                chr_width = Util.stringWidth(strReturn);
+                if (chr_width < maxWidth) {
+                    break;
+                }
+            }
+        }
+        return strReturn;
+    }
+    
     public final static int S = 1000000;
     public final static int MS = 1000;
     public final static int US = 1;
@@ -168,5 +183,7 @@ public class Util {
     public static int us(float us) {
         return (int)(us);
     }  
+
+    
     
 }

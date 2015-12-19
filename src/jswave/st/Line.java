@@ -6,6 +6,7 @@
 package jswave.st;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import jswave.Util;
 
@@ -42,4 +43,43 @@ public class Line extends Data {
         return list;
     }
     
+    public void draw(Graphics g, int y, double wdt) {
+        //System.out.println("Line:" + y);
+        ArrayList<Integer> x = getX(timeX, offsetX, wdt);
+
+        int timeStart = x.get(0);
+        if (timeStart < offsetX) timeStart = offsetX;
+
+        drawName(g, getName(), y, getHeightMax());
+        
+        setY(y - Line.lineHeight, y);
+        clearTouch();
+        for (int timeId=1; timeId<x.size(); timeId++) {
+            if (x.get(timeId) < offsetX) {timeStart = offsetX; continue;}
+
+            g.setColor(listColor.get(timeId));
+            int timeEnd = x.get(timeId);
+            
+            int yy = y;
+            if (timeId < listY.size()) {
+                yy = y - listY.get(timeId);
+            }
+            g.fillRect(timeStart, yy-Line.lineHeight, timeEnd - timeStart, Line.lineHeight);
+            addTouch(timeId-1, timeStart, yy-10, timeEnd, yy);
+
+            String str = null;
+            if (timeId < listName.size()) {
+                str = listName.get(timeId);
+                if (str != null && !str.equals("")) {
+                    str = Util.trimDownText(str, timeEnd - timeStart - 8);
+                    //g.setColor(colorFont);
+                    g.drawString(str, timeStart + 4, yy - 5);
+                }
+            }
+
+            timeStart = timeEnd;
+            
+            if (timeStart > screenW) break;
+        }
+    }    
 }

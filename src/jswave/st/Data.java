@@ -6,6 +6,7 @@
 package jswave.st;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import jswave.Util;
 
@@ -13,12 +14,15 @@ import jswave.Util;
  *
  * @author cttmayi
  */
-public class Data {
+public class Data extends Widget{
     
     public static int LINE = 0;
     public static int DIAGRAM = 1;
     public static int HISTOGRAM = 2;
+    
+
     public int type;
+    
     private String name = null;
     
     private ArrayList<Touch> touchs;
@@ -80,7 +84,12 @@ public class Data {
     }
 
     public int getY0() {
-        return yEnd - heightMax;
+        if (enable) {
+            return yEnd - heightMax;
+        }
+        else {
+            return yEnd;
+        }
     }    
     
     public int getY1() {
@@ -127,5 +136,13 @@ public class Data {
         return Util.colorMake(colori);
     }
     
+    public void drawName(Graphics g, String name, int y, int height) {
+        drawString(g, name, 10, y, offsetX - 10, height, 
+                    true, colorFont, null);
+    }
+    
+    public void draw(Graphics g, int y, double wdt) {
+        
+    }
     
 }
