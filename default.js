@@ -1,5 +1,3 @@
-var result = new java.util.ArrayList();
-
 function s(t) {
 	return Number(1000000 * t);
 }
@@ -118,27 +116,36 @@ function main(){
 	
 	script.debug(1);
 	
-	script.setTimeRuler(s(3600 * 25) + ms(521));
+	script.setTimeRuler(s(3600 * 25) + ms(550), s(2333) + ms(670));
+	script.setTimePoint(s(8))
 	
 	script.setRangeListener("range");
 	script.setSelectListener("range");
 	script.setConnectionListener("connection");
 	script.setWaveListener("wave");
 	script.setClickListener("click");
+	script.setNameListener("name");
 	
 	histogram_1()
+	script.setWaveOutBorderColor(0, black)
 	histogram_0()
 	line_0()
-	//line_0()
+	line_0()
+	line_0()
+	line_0()
 
-	script.addConnection(s(1), 1, 2, 0);
-	script.addConnection(s(2), 2, 3, 0);
+	script.addConnection(s(1), 1, 2, white);
+	script.addConnection(s(2), 2, 3, black);
 
-	script.addConnection(s(1.8), 0, 3, 0);
+	script.addConnection(s(1.8), 0, 3, red);
 	//script.addConnection(s(2), 9, 3, 0);
 	//script.addConnection(s(2.5), 22, 6, 0);	
 	
-
+	script.addGroup("ANR", 0,0,yellow,true)
+	script.addGroup("Message", 1,2,yellow,true)
+	script.addGroup("TRACE", 3,4,green,false)
+	
+	script.setText("Message is too long")
 }
 
 function range(id, t1, t2){
@@ -167,5 +174,9 @@ function wave(id, t, line) {
 
 function click(id, t, line) {
 	infoShow("click " + id, t, line)
+}
+
+function name(t, line) {
+	infoShow("name " + line, t, line)
 }
 main()
