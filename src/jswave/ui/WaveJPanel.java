@@ -246,6 +246,17 @@ public final class WaveJPanel extends javax.swing.JPanel {
         return groups.size() - 1;
     }
     
+    public void setWaveOutBorderColor(int id, int color) {
+        if (id < waveList.size() ) {
+            Data wave =  waveList.get(id);
+            wave.outBorderColor = Util.colorMake(color);
+        }
+        else if (Util.isDebug) {
+            System.out.println("[ERROR][setWaveOutBorderColor] ID:" + id + " LINE ERROR! (>=" + waveList.size() + ")");
+        }
+        
+    }
+    
     public int addLine(String name, ArrayList<Integer> time, ArrayList<Integer> colors, ArrayList<Integer> ys, ArrayList<String> names) {
         Line list = Line.newData(time, colors, ys, names);
         list.setName(name);
@@ -279,7 +290,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
             return connectionList.size() - 1; 
         }
         else if (Util.isDebug){
-            System.out.println("[ERROR] START:" + start + " END:" + end + " LINE ERROR! (>=" + waveList.size() + ")");
+            System.out.println("[ERROR][addConnection] START:" + start + " END:" + end + " LINE ERROR! (>=" + waveList.size() + ")");
         }
         return -1;
     }

@@ -97,6 +97,9 @@ public class Script {
         return this.frame.getPanel().addGroup(name, start.intValue(), end.intValue(), colori.intValue(), enable);
     }
     
+    public void setWaveOutBorderColor(int id, int color) {
+        this.frame.getPanel().setWaveOutBorderColor(id, color);
+    }
     
     public int addLine(String name, ArrayList<Number> times, ArrayList<Number> colors, ArrayList<Number> ys, ArrayList<String> names) {
         ArrayList<Integer> timei = Util.an2i(times);

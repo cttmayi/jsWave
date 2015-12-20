@@ -16,6 +16,7 @@ import jswave.Util;
  */
 public class Histogram extends Data{
     public int width;
+    
     public ArrayList<Integer> listTime2 = new ArrayList<Integer>();
     public ArrayList<Color> listColor = new ArrayList<Color>();
     public ArrayList<Integer> listY = new ArrayList<Integer>();
@@ -67,13 +68,20 @@ public class Histogram extends Data{
             
             if (xx < offsetX) xx = offsetX;
             
-            g.setColor(listColor.get(timeId));
+            
             
             int w = xx2 - xx;
             if (w <= 0) w = 1;
             
             int yh = listY.get(timeId);
+            
+            g.setColor(listColor.get(timeId));
             g.fillRect(xx, y-yh, w, yh);
+            if (outBorderColor != null) {
+                g.setColor(outBorderColor);
+                g.drawRect(xx, y-yh, w, yh);
+            }
+            
             addTouch(timeId, xx, y-yh, xx+w, y);
             
             String str = null;

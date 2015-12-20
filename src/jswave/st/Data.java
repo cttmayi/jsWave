@@ -25,7 +25,9 @@ public class Data extends Widget{
     
     private String name = null;
     
-    private ArrayList<Touch> touchs;
+    public Color outBorderColor = null;
+    
+    private final ArrayList<Touch> touchs;
     
     private int heightMax = 10;
     
