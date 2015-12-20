@@ -32,8 +32,6 @@ public class Util {
         return fontArialMetrics.stringWidth(str);
     }
     
-    
-    
     public static void addPara(String para){
         paraList.add(para);
     }
@@ -58,7 +56,6 @@ public class Util {
         }
     }
     
-    
     public static int getTime(int x, int pX, int timeX, double tdp) { 
         return timeX + (int)(tdp * (x  - pX));
     }
@@ -74,25 +71,12 @@ public class Util {
     public static int getX(int t, int pX, int pW, int timeX, int timeW) { 
         return getX(t, pX, timeX, (double)pW/timeW);
     }
-    
-    public static String getTimeString(int t) {
-        if (t > 1000000) {
-            return String.valueOf((double)(t/1000)/1000).concat("s");
-        }
-        else if (t > 1000) {
-            return String.valueOf((double)(t)/1000).concat("ms");
-        }
-        else {
-            return String.valueOf(t).concat("us");
-        }
-    }
 
     public static Color colorMake(int colori) {
         return new Color((0xFF0000 & colori) >> 16, (0xFF00 & colori) >> 8, 0xFF & colori);
     }
 
     public static int o2i(Object o) {
-        
         String type = o.getClass().getName();
         System.out.println(type);
         if (type.equals("java.lang.Double")) {
@@ -103,8 +87,7 @@ public class Util {
         }
         else if (type.equals("java.lang.Long")){
             
-        }        
-        
+        }
         return 0;
     } 
 
@@ -184,6 +167,59 @@ public class Util {
         return (int)(us);
     }  
 
+    public static String getTimeString(int t) {
+        if (t > Util.S) {
+            return String.format("%.03fs", (double)(t/1000)/1000);
+        }
+        else if (t > Util.MS) {
+            return String.format("%.03fms", (double)(t)/1000);
+        }
+        else {
+            return String.format("%dus", (t));
+        }
+    }
+    
+    public static String timeFormatHMS(long t, int w) {
+        
+        long h = t /60/60/Util.S;
+        long m = (t - h *60 * 60* Util.S)/60/Util.S;
+        
+        float s = (float)((t - h * 60 * 60 * Util.S- m * 60 * Util.S))/Util.S;
+        
+        if (w >= Util.S && t % Util.S == 0) {
+            return String.format("%02d:%02d:%02d", h % 24, m, (int)s);
+        }
+        else if (w >= Util.MS && t % Util.MS == 0){
+            return String.format("%02d:%02d:%02.03f", h % 24, m, s);
+        }
+        else {
+            return String.format("%02d:%02d:%02.04f", h % 24, m, s);
+        }
+    }
+    
+    public static String timeFormatS(long t, int w) {
+        if (w >= Util.S && t % Util.S == 0) {
+            return String.format("%ds",((t))/Util.S);
+        }
+        else if (w >= Util.MS && t % Util.MS == 0) {
+            return String.format("%.03fs",((double)(t))/Util.S);
+        }
+        else {
+            return String.format("%.04fs",((double)(t))/Util.S);
+        }
+    }
+
+    public static String timeFormatUS(long t, int w) {
+        if (w >= Util.S && t % Util.S == 0) {
+            return String.format("%ds",((t))/Util.S);
+        }
+        else if (w >= Util.MS && t % Util.MS == 0) {
+            return String.format("%dms",((t))/Util.MS);
+        }
+        else {
+            return String.format("%dus",((t))/Util.US);
+        }
+    }
     
     
 }

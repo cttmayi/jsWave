@@ -71,7 +71,8 @@ public class JsWaveJFrame extends javax.swing.JFrame {
             jsEnv.loadFile(defaultJs);
         }
 
-        waveJPanel.setTimeRange(0, 100000000);
+        waveJPanel.setTimeRange(Integer.MIN_VALUE,  Integer.MAX_VALUE);
+        waveJPanel.updateGroupStatus();
     }
 
     private void initUI() {

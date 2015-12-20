@@ -20,7 +20,7 @@ public class Widget {
     
     public static int timeX, timeW;
     public static int offsetLine;
-    public static int rangeX1, rangeX2;
+    //public static int rangeX1, rangeX2;
     
     public static int offsetX, offsetY;
     
@@ -70,10 +70,18 @@ public class Widget {
             else {
                 str = infos[i];
             }
-
             g.drawString(str, x, y + Util.FontHeight * (i+1));
         }
     }
     
+    public void drawName(Graphics g, String name, int y, int height) {
+        drawString(g, name, 2, y, offsetX - 4, height, 
+                    true, colorFont, null);
+    }
+
+    public void drawNameBGC(Graphics g, String name, int y, int height, Color color) {
+        drawString(g, name, 2, y, offsetX - 4, height, 
+                    true, colorFont, color);
+    }
     
 }

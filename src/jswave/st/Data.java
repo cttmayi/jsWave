@@ -62,9 +62,14 @@ public class Data extends Widget{
         isCallbackEnable = enable;
     }
     
+    
+    public boolean inLine (int y) {
+        return getY0() <= y && y <= getY2();
+    }
+    
     public int getCallbackId(int x, int y) {
         int id = -1;
-        if (isCallbackEnable && getY0() <= y && y <= getY2()) {
+        if (isCallbackEnable && enable && inLine(y)) {
             for (Touch touch: touchs) {
                 if (touch.isInRange(x, y)) {
                     id =  touch.getId();
@@ -74,8 +79,17 @@ public class Data extends Widget{
                 }
             }
         }
-
         return id;
+    }
+
+    public boolean inNameZone(int x, int y) {
+        int id = -1;
+        if (isCallbackEnable && inLine(y)) {
+            if (x < offsetX) {
+                return enable;
+            }
+        }
+        return false;
     }
     
     public void setY(int start, int end) {
@@ -136,10 +150,7 @@ public class Data extends Widget{
         return Util.colorMake(colori);
     }
     
-    public void drawName(Graphics g, String name, int y, int height) {
-        drawString(g, name, 10, y, offsetX - 10, height, 
-                    true, colorFont, null);
-    }
+
     
     public void draw(Graphics g, int y, double wdt) {
         

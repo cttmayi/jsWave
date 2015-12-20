@@ -83,9 +83,18 @@ public class Script {
             this.frame.getPanel().funClickListener = name;
         }
     }    
+
+    public void setNameListener(String name) {
+        if (name.equals("")) {
+            this.frame.getPanel().funNameListener = null;
+        }
+        else {
+            this.frame.getPanel().funNameListener = name;
+        }
+    }    
     
-    public int addGroup(int start, int end, int colori, int enable) {
-        return this.frame.getPanel().addGroup(start, end, colori, enable > 0);
+    public int addGroup(String name, Number start, Number end, Number colori, boolean enable) {
+        return this.frame.getPanel().addGroup(name, start.intValue(), end.intValue(), colori.intValue(), enable);
     }
     
     
