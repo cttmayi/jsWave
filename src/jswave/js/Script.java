@@ -11,6 +11,7 @@ import jswave.Util;
 import jswave.st.Connection;
 import jswave.st.Group;
 import jswave.st.Histogram;
+import jswave.st.Info;
 import jswave.st.Line;
 import jswave.st.TimeRuler;
 import jswave.st.Wave;
@@ -100,6 +101,11 @@ public class Script {
         return Group.add(name, start.intValue(), end.intValue(), colori.intValue(), enable);
     }
     
+    public void clearGroup() {
+        Group.clear();
+    }
+    
+    
     public void setWaveOutBorderColor(int id, int color) {
         if (id < Wave.size() ) {
             Wave wave =  Wave.get(id);
@@ -170,6 +176,14 @@ public class Script {
 
         return -1;
     }
+
+    public void clearWave() {
+        Info.clear();
+        Connection.clear();
+        Group.clear();
+        Wave.clear();
+    }
+    
     
     public int addConnection(Number time, Number start, Number end, Number color) {
         if (start.intValue() < Wave.size() && end.intValue() < Wave.size()) {
@@ -181,6 +195,10 @@ public class Script {
         return -1;
     }
 
+    public void clearConnection() {
+        Connection.clear();
+    }
+    
     public void setTable(ArrayList<String> names, ArrayList<String> datas, ArrayList<String> datars) {
         this.frame.setTable(names, datas, datars);
     }

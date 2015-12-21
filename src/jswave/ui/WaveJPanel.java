@@ -249,11 +249,13 @@ public final class WaveJPanel extends javax.swing.JPanel {
             }
         }
 
-        int y0 = Wave.getLineY0(itemSelected);
-        int y2 = Wave.getLineY2(itemSelected);
-        if (itemSelected >= 0 && itemSelected < Wave.size() && y2 != y0) {
-            g.setColor(colorSelect);
-            g.fillRect(0, y0, getWidth(), y2 - y0);
+        if (itemSelected >= 0 && itemSelected < Wave.size()) {
+            int y0 = Wave.getLineY0(itemSelected);
+            int y2 = Wave.getLineY2(itemSelected);
+            if (y2 != y0) {
+                g.setColor(colorSelect);
+                g.fillRect(0, y0, getWidth(), y2 - y0);
+            }
         }
     }
     
