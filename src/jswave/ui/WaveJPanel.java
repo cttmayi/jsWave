@@ -348,8 +348,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
     }
 
     private void drawGroup(Graphics g, double wdt, int g_gap) {
-        for (int id=0; id<groups.size(); id++) {
-            Group group = groups.get(id);
+        for (Group group : groups) {
             group.draw(g, this, wdt, g_gap);
         }
     }
@@ -364,8 +363,6 @@ public final class WaveJPanel extends javax.swing.JPanel {
     private void drawFrame(Graphics g) {
         g.setColor(Color.black);
         g.drawLine(offsetX - 3, 0, offsetX - 3, getHeight());
-
-        int gap = 6;
 
         //draw range
         if (rangeSelectX1 >= 0 && rangeSelectX2 >= 0) {
@@ -644,8 +641,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
                     }
                 }
 
-                for (int id=0; id<groups.size(); id++) {
-                    Group group = groups.get(id);
+                for (Group group : groups) {
                     if ( group.y0 < y && y < group.y2) {
                         if (group.enable && (clicked == false) ){
                             group.enable = false;

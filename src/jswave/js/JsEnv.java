@@ -80,7 +80,7 @@ public class JsEnv {
         String ret = null;
         try {
             br =  new BufferedReader(new FileReader(f));
-            String line = null;
+            String line;
             StringBuilder sb = new StringBuilder((int)f.length());
             while( (line = br.readLine()) != null ) {
                 sb.append(line).append("\n");

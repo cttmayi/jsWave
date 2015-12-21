@@ -49,14 +49,13 @@ public class JsWaveJFrame extends javax.swing.JFrame {
         String libPath = jarPath + "libs\\";
         
         File dir = new File(libPath);
-        File file[] = dir.listFiles();
-        if (file != null) {
-            for (int i = 0; i < file.length; i++) {
-                if (file[i].isDirectory()) {
+        File files[] = dir.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                } else {
+                    jsEnv.loadFile(file.getAbsolutePath());
                 }
-                else {
-                    jsEnv.loadFile(file[i].getAbsolutePath());
-                }  
             }
         }
 
