@@ -8,6 +8,10 @@ package jswave.js;
 import java.util.ArrayList;
 import jswave.ui.JsWaveJFrame;
 import jswave.Util;
+import jswave.st.Connection;
+import jswave.st.Group;
+import jswave.st.TimeRuler;
+import jswave.st.Wave;
 
 /**
  *
@@ -29,11 +33,11 @@ public class Script {
     }
 
     public void setTimeRuler(Number us, Number us2) {
-        this.frame.getPanel().setTimeRuler(us.longValue(), us2.longValue());
+        TimeRuler.getData().setTimeRuler(us.longValue(), us2.longValue());
     }
 
     public void setTimePoint(Number us) {
-        this.frame.getPanel().setTimePoint(us.intValue());
+        TimeRuler.getData().setTimePoint(us.intValue());
     }
 
     public void setRangeListener(String name) {
@@ -91,11 +95,17 @@ public class Script {
     }    
     
     public int addGroup(String name, Number start, Number end, Number colori, boolean enable) {
-        return this.frame.getPanel().addGroup(name, start.intValue(), end.intValue(), colori.intValue(), enable);
+        return Group.add(name, start.intValue(), end.intValue(), colori.intValue(), enable);
     }
     
     public void setWaveOutBorderColor(int id, int color) {
-        this.frame.getPanel().setWaveOutBorderColor(id, color);
+        if (id < Wave.size() ) {
+            Wave wave =  Wave.get(id);
+            wave.outBorderColor = Util.colorMake(color);
+        }
+        else if (Util.isDebug) {
+            System.out.println("[ERROR][setWaveOutBorderColor] ID:" + id + " LINE ERROR! (>=" + Wave.size() + ")");
+        }
     }
     
     public int addLine(String name, ArrayList<Number> times, ArrayList<Number> colors, ArrayList<Number> ys, ArrayList<String> names) {
@@ -156,8 +166,14 @@ public class Script {
         return -1;
     }
     
-    public int addConnection(double time, double start, double end, double color) {
-        return this.frame.getPanel().addConnection((int)time, (int)start, (int)end, (int)color);
+    public int addConnection(Number time, Number start, Number end, Number color) {
+        if (start.intValue() < Wave.size() && end.intValue() < Wave.size()) {
+            Connection.add(time.intValue(), start.intValue(), end.intValue(), color.intValue());
+        }
+        else if (Util.isDebug){
+            System.out.println("[ERROR][addConnection] START:" + start + " END:" + end + " LINE ERROR! (>=" + Wave.size() + ")");
+        }
+        return -1;
     }
 
     public void setTable(ArrayList<String> names, ArrayList<String> datas, ArrayList<String> datars) {

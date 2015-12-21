@@ -7,6 +7,7 @@ package jswave.st;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import jswave.Util;
 import jswave.ui.WaveJPanel;
 
@@ -15,6 +16,42 @@ import jswave.ui.WaveJPanel;
  * @author lenovo
  */
 public class Group extends Widget {
+    
+    public static final ArrayList<Group> array = new ArrayList<Group>();
+
+    public static ArrayList<Group> getArray() {
+        return array;
+    }
+
+    public static void clear() {
+        array.clear();
+    }
+    
+    public static int add(Group data) {
+        array.add(data);
+        return array.size() - 1;
+    }
+    
+    public static Group get(int id) {
+        return array.get(id);
+    }
+
+    public static int size() {
+        return array.size();
+    }
+
+    public static int add(String name, int start, int end, int colori, boolean enable) {
+        Group group = new Group();
+        group.name = name;
+        group.start = start;
+        group.end = end;
+        group.color = Util.colorMake(colori);
+        group.enable = enable;
+
+        return Group.add(group);
+    }
+    
+    
     public String name;
 
     public int start;
@@ -26,7 +63,7 @@ public class Group extends Widget {
     public Color color;
 
     public boolean enable;
-
+    
     public boolean getEnable() {
         return enable;
     }

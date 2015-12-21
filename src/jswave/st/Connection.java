@@ -7,7 +7,9 @@ package jswave.st;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import jswave.Util;
+import static jswave.st.Wave.array;
 import jswave.ui.WaveJPanel;
 
 
@@ -16,12 +18,44 @@ import jswave.ui.WaveJPanel;
  * @author cttmayi
  */
 public class Connection extends Widget{
+    public static final ArrayList<Connection> array = new ArrayList<Connection>();
+
+    public static ArrayList<Connection> getArray() {
+        return array;
+    }
     
+    public static void clear() {
+        array.clear();
+    }
+    
+    public static Connection get(int id) {
+        return array.get(id);
+    }
+
+    public static int size() {
+        return array.size();
+    }
+
     public int time;
     public int start;
     public int end;
     public Color color;
 
+    public Connection() {
+    }
+
+
+
+    public static int add(int time, int start, int end, int color) {
+        Connection data = new Connection();
+        data.time = time;
+        data.color = ColorMake(color);
+        data.start = start;
+        data.end = end;
+        array.add(data);
+        return array.size() - 1;
+    }
+    
     public static Color ColorMake(int colori) {
         return new Color((0xFF0000 & colori) >> 16, (0xFF00 & colori) >> 8, 0xFF & colori);
     }

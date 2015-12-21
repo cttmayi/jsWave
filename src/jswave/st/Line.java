@@ -15,8 +15,8 @@ import jswave.Util;
  * @author cttmayi
  */
 public class Line extends Wave {
-    public static final int lineHeight = 3;
-
+    public static final int lineHeight = 3;    
+    
     public ArrayList<Color> listColor = new ArrayList<Color>();
     public ArrayList<Integer> listY = new ArrayList<Integer>();
     public ArrayList<String> listName = new ArrayList<String>();

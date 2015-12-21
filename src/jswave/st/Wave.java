@@ -15,6 +15,30 @@ import jswave.Util;
  * @author cttmayi
  */
 public class Wave extends Widget{
+    
+    public static final ArrayList<Wave> array = new ArrayList<Wave>();
+
+    public static ArrayList<Wave> getArray() {
+        return array;
+    }
+
+    public static void clear() {
+        array.clear();
+    }
+    
+    public static int add(Wave data) {
+        array.add(data);
+        return array.size() - 1;
+    }
+    
+    public static Wave get(int id) {
+        return array.get(id);
+    }
+
+    public static int size() {
+        return array.size();
+    }
+    
     public static int LINE = 0;
     public static int DIAGRAM = 1;
     public static int HISTOGRAM = 2;
@@ -102,7 +126,7 @@ public class Wave extends Widget{
         else {
             return yEnd;
         }
-    }    
+    }
 
     public int getY1() {
         return yStart;
