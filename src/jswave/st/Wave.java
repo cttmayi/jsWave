@@ -39,6 +39,37 @@ public class Wave extends Widget{
         return array.size();
     }
     
+    public static int getLineY0(int line) {
+        if (line - offsetLine >= 0) {
+            return Wave.get(line).getY0();
+        }
+        else {
+            return offsetY;
+        }
+    }
+
+    public static int getLineY1(int line) {
+        if (line - offsetLine >= 0) {
+            return Wave.get(line).getY1();
+        }
+        else {
+            return offsetY;
+        }
+    }
+
+    public static int getLineY2(int line) {
+        if (line - offsetLine >= 0) {
+            return Wave.get(line).getY2();
+        }
+        else {
+            return offsetY;
+        }
+    }
+
+    public static int getLineM(int line) {
+        return (getLineY0(line) + getLineY2(line))/2;
+    }
+
     public static int LINE = 0;
     public static int DIAGRAM = 1;
     public static int HISTOGRAM = 2;

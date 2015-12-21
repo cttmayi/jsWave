@@ -27,27 +27,28 @@ public class Histogram extends Wave{
         return listX;
     }
 
-    public static Histogram newData(ArrayList<Integer> time, ArrayList<Integer> time2, 
+    public static int add(String name, ArrayList<Integer> time, ArrayList<Integer> time2, 
             ArrayList<Integer> ys, ArrayList<Integer> colors, ArrayList<String> names, int heightMax) {
-        Histogram list = new Histogram();
-        list.type = Wave.HISTOGRAM;
+        Histogram wave = new Histogram();
+        wave.type = Wave.HISTOGRAM;
+        wave.setName(name);
         for (int id=0; id<colors.size(); id++) {
             Color color = ColorMake(colors.get(id));
-            list.listColor.add(color);
+            wave.listColor.add(color);
         }
         for (int id=0; id<ys.size(); id++) {
             int y = ys.get(id);
             if (heightMax < y) {
                 y = heightMax;
             }
-            list.listY.add(y);
+            wave.listY.add(y);
         }
 
-        list.setHeightMax(heightMax);
-        list.listTime = time;
-        list.listTime2 = time2;
-        list.listName = names;
-        return list;
+        wave.setHeightMax(heightMax);
+        wave.listTime = time;
+        wave.listTime2 = time2;
+        wave.listName = names;
+        return  Wave.add(wave);
     }    
 
     public void draw(Graphics g, int y, double wdt) {

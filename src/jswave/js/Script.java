@@ -10,6 +10,8 @@ import jswave.ui.JsWaveJFrame;
 import jswave.Util;
 import jswave.st.Connection;
 import jswave.st.Group;
+import jswave.st.Histogram;
+import jswave.st.Line;
 import jswave.st.TimeRuler;
 import jswave.st.Wave;
 
@@ -36,8 +38,8 @@ public class Script {
         TimeRuler.getData().setTimeRuler(us.longValue(), us2.longValue());
     }
 
-    public void setTimePoint(Number us) {
-        TimeRuler.getData().setTimePoint(us.intValue());
+    public void setTimePoint(Number us, Number color) {
+        TimeRuler.getData().setTimePoint(us.intValue(), color.intValue());
     }
 
     public void setRangeListener(String name) {
@@ -126,7 +128,8 @@ public class Script {
         }
 
         if (!times.isEmpty()) {
-            return this.frame.getPanel().addLine(name, timei, colori, yi, names);
+            this.frame.getPanel().updateTimeLimit(timei);
+            return Line.add(name, timei, colori, yi, names);
         }
         return -1;
     }
@@ -159,8 +162,10 @@ public class Script {
             }
         }
 
-        if (!times.isEmpty()) {   
-            return this.frame.getPanel().addHistogram(name, timei, timei2, yi, colori, names, heightMax);
+        if (!times.isEmpty()) {
+            this.frame.getPanel().updateTimeLimit(timei);
+            this.frame.getPanel().updateTimeLimit(timei2);
+            return Histogram.add(name, timei, timei2, yi, colori, names, heightMax);
         }
 
         return -1;

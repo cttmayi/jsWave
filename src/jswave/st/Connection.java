@@ -9,7 +9,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import jswave.Util;
-import static jswave.st.Wave.array;
 import jswave.ui.WaveJPanel;
 
 
@@ -77,7 +76,7 @@ public class Connection extends Widget{
         return list;
     }
 
-    public void draw(Graphics g, WaveJPanel panel, double wdt) {
+    public void draw(Graphics g, double wdt) {
         if (enable) {
             int x = getX(timeX, offsetX, wdt);
 
@@ -88,13 +87,13 @@ public class Connection extends Widget{
 
             int yStart, yEnd, yO;
             if (start < end) {
-                yStart = panel.getLineY2(start);
-                yEnd = panel.getLineY1(end);
+                yStart = Wave.getLineY2(start);
+                yEnd = Wave.getLineY1(end);
                 yO = yEnd - 4;
             }
             else {
-                yStart = panel.getLineY1(start);
-                yEnd = panel.getLineY2(end);
+                yStart = Wave.getLineY1(start);
+                yEnd = Wave.getLineY2(end);
                 yO = yEnd;
             }
             if (yStart != yEnd) {

@@ -26,12 +26,12 @@ public class Group extends Widget {
     public static void clear() {
         array.clear();
     }
-    
+
     public static int add(Group data) {
         array.add(data);
         return array.size() - 1;
     }
-    
+
     public static Group get(int id) {
         return array.get(id);
     }
@@ -77,10 +77,10 @@ public class Group extends Widget {
         }
     }
 
-    public void draw(Graphics g, WaveJPanel panel, double wdt, int g_gap) {
+    public void draw(Graphics g, double wdt, int g_gap) {
 
-        y0 = panel.getLineY0(start) - g_gap/3*2;
-        y2 = panel.getLineY2(end) + g_gap/3 - 5;
+        y0 = Wave.getLineY0(start) - g_gap/3*2;
+        y2 = Wave.getLineY2(end) + g_gap/3 - 5;
 
         g.setColor(color);
 

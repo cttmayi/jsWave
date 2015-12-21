@@ -21,23 +21,25 @@ public class Line extends Wave {
     public ArrayList<Integer> listY = new ArrayList<Integer>();
     public ArrayList<String> listName = new ArrayList<String>();
 
-    public static Line newData(ArrayList<Integer> time, ArrayList<Integer> colors, ArrayList<Integer> ys, ArrayList<String> names) {
-        Line list = new Line();
-        list.type = Wave.LINE;
-
+    public static int add(String name, ArrayList<Integer> time, ArrayList<Integer> colors, ArrayList<Integer> ys, ArrayList<String> names) {
+        Line wave = new Line();
+        wave.type = Wave.LINE;
+        wave.setName(name);
+        
+        
         for (int id=0; id<colors.size(); id++) {
             Color color = ColorMake(colors.get(id));
-            list.listColor.add(color);
+            wave.listColor.add(color);
         }
-        list.listTime = time;
-        list.listY = ys;
-        list.listName = names;
+        wave.listTime = time;
+        wave.listY = ys;
+        wave.listName = names;
         
         for (int y: ys) {
-            list.setHeightMax(y + Util.fontHeight);
+            wave.setHeightMax(y + Util.fontHeight);
         }
 
-        return list;
+        return Wave.add(wave);
     }
     
     public void draw(Graphics g, int y, double wdt) {

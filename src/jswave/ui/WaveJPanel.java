@@ -41,7 +41,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
     public String funWaveClickListener;
     public String funWaveNameListener;
 
-    private final int offsetX = 100, offsetY = 42;
+    private final int waveOffsetX = 100, waveOffsetY = 42;
     
     private final Color colorSelect = new Color(255,0,0,30);
     private final Color colorFont = Color.black;    
@@ -119,7 +119,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
     }   
 
     private int getW() {
-        return getWidth() - offsetX;
+        return getWidth() - waveOffsetX;
     }
 
     public void setOffsetLine(int line) {
@@ -144,37 +144,6 @@ public final class WaveJPanel extends javax.swing.JPanel {
             }
         }
         return l;
-    }
-
-    public int getLineY0(int line) {
-        if (line - offsetLine >= 0) {
-            return Wave.get(line).getY0();
-        }
-        else {
-            return offsetY;
-        }
-    }
-
-    public int getLineY1(int line) {
-        if (line - offsetLine >= 0) {
-            return Wave.get(line).getY1();
-        }
-        else {
-            return offsetY;
-        }
-    }
-
-    public int getLineY2(int line) {
-        if (line - offsetLine >= 0) {
-            return Wave.get(line).getY2();
-        }
-        else {
-            return offsetY;
-        }
-    }
-
-    public int getLineM(int line) {
-        return (getLineY0(line) + getLineY2(line))/2;
     }
 
     private int getLineGroup(int line) {
@@ -203,7 +172,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
         }
     }
 
-    private void updateTimeLimit(ArrayList<Integer> time) {
+    public void updateTimeLimit(ArrayList<Integer> time) {
         int x2 = time.get(time.size()-1);
         int x1 = time.get(0);
         if (timeLimitX1 > x1) {
@@ -212,28 +181,6 @@ public final class WaveJPanel extends javax.swing.JPanel {
         if (timeLimitX2 < x2) {
             timeLimitX2 = x2;
         }
-    }
-
-    public int addLine(String name, ArrayList<Integer> time, ArrayList<Integer> colors, ArrayList<Integer> ys, ArrayList<String> names) {
-        Line list = Line.newData(time, colors, ys, names);
-        list.setName(name);
-        updateTimeLimit(time);
-        return Wave.add(list);
-    }
-
-    public int addDiagram(String name, ArrayList<Integer> time, ArrayList<Integer> y, int heightMax, int color) {
-        Diagram list = Diagram.newData(time, y, heightMax, color);
-        list.setName(name);
-        return Wave.add(list);
-    }
-
-    public int addHistogram(String name, ArrayList<Integer> time, ArrayList<Integer> time2, 
-            ArrayList<Integer> y, ArrayList<Integer> colors, ArrayList<String> names, int heightMax) {
-        Histogram list = Histogram.newData(time, time2, y, colors, names, heightMax);
-        list.setName(name);
-        updateTimeLimit(time);
-        updateTimeLimit(time2);
-        return Wave.add(list);
     }
 
     public void setInfo(ArrayList<Integer> xs, ArrayList<Integer> ys, 
@@ -251,26 +198,26 @@ public final class WaveJPanel extends javax.swing.JPanel {
 
     private void drawConnection(Graphics g, double wdt) {
         for (Connection data : Connection.getArray()) {
-            data.draw(g, this, wdt);
+            data.draw(g, wdt);
         }
     }
 
     private void drawGroup(Graphics g, double wdt, int g_gap) {
         for (Group group : Group.getArray()) {
-            group.draw(g, this, wdt, g_gap);
+            group.draw(g, wdt, g_gap);
         }
     }
 
     private void drawInfo(Graphics g) {
         for (Info info: Info.getArray()) {
-            Widget.drawString(g, info.info, getX(info.x), getLineM(info.y), Integer.MAX_VALUE, Integer.MAX_VALUE, 
+            Widget.drawString(g, info.info, getX(info.x), Wave.getLineM(info.y), Integer.MAX_VALUE, Integer.MAX_VALUE, 
                     false, info.fgColor, info.bgColor);
         }
     }
 
     private void drawFrame(Graphics g) {
         g.setColor(Color.black);
-        g.drawLine(offsetX - 3, 0, offsetX - 3, getHeight());
+        g.drawLine(waveOffsetX - 3, 0, waveOffsetX - 3, getHeight());
 
         //draw range
         if (rangeSelectX1 >= 0 && rangeSelectX2 >= 0) {
@@ -285,26 +232,25 @@ public final class WaveJPanel extends javax.swing.JPanel {
             g.setColor(Color.blue);
 
             g.drawString(Util.getTimeString(t), 
-                        x1, offsetY + Util.fontHeight);            
+                        x1, waveOffsetY + Util.fontHeight);            
             g.drawString(String.format("%s ~ %s",Util.timeFormatS(t1,t), Util.timeFormatS(t2,t)), 
-                        x1, offsetY + Util.fontHeight * 2);
-            
-            
+                        x1, waveOffsetY + Util.fontHeight * 2);
+
             long timeOffset = TimeRuler.getData().getTimeOffset();
             long timeOffset2 = TimeRuler.getData().getTimeOffset2();
 
             if (timeOffset != 0) {
                 g.drawString(String.format("%s ~ %s", Util.timeFormatHMS(t1+ timeOffset, t), Util.timeFormatHMS(t2 + timeOffset, t)),
-                        x1, offsetY + Util.fontHeight * 3);
+                        x1, waveOffsetY + Util.fontHeight * 3);
             }
             if (timeOffset2 != 0) {
                 g.drawString(String.format("%s ~ %s", Util.timeFormatS(t1 + timeOffset2, t), Util.timeFormatS(t2 + timeOffset2, t)),
-                        x1, offsetY + Util.fontHeight * 4);
+                        x1, waveOffsetY + Util.fontHeight * 4);
             }
         }
 
-        int y0 = getLineY0(itemSelected);
-        int y2 = getLineY2(itemSelected);
+        int y0 = Wave.getLineY0(itemSelected);
+        int y2 = Wave.getLineY2(itemSelected);
         if (itemSelected >= 0 && itemSelected < Wave.size() && y2 != y0) {
             g.setColor(colorSelect);
             g.fillRect(0, y0, getWidth(), y2 - y0);
@@ -324,8 +270,8 @@ public final class WaveJPanel extends javax.swing.JPanel {
         Widget.timeW = timeW;
         Widget.offsetLine = offsetLine;
 
-        Widget.offsetX = offsetX;
-        Widget.offsetY = offsetY;
+        Widget.offsetX = waveOffsetX;
+        Widget.offsetY = waveOffsetY;
 
         Widget.screenW = getWidth();
         Widget.screenH = getHeight();
@@ -340,10 +286,9 @@ public final class WaveJPanel extends javax.swing.JPanel {
 
         drawTimeRuler(g, 0);
 
-        int y = offsetY;
+        int y = waveOffsetY;
         int groupId = -1; 
         for (int id=offsetLine; id<Wave.size(); id ++) {
-            System.out.println(id);
             Wave list = Wave.get(id);
             if (groupId != list.group) {
                 y += g_gap;
@@ -375,11 +320,11 @@ public final class WaveJPanel extends javax.swing.JPanel {
     }
 
     private int getTime(int x){
-        return Util.getTime(x, offsetX, getW(), timeX, timeW);
+        return Util.getTime(x, waveOffsetX, getW(), timeX, timeW);
     }
 
     private int getX(int t) {
-        return Util.getX(t, offsetX, getW(), timeX, timeW);
+        return Util.getX(t, waveOffsetX, getW(), timeX, timeW);
     }
 
     private boolean inConnectionRange(int id, int x, int y) {
@@ -486,8 +431,8 @@ public final class WaveJPanel extends javax.swing.JPanel {
                 if (rangeSelectX2 > getWidth()) {
                     rangeSelectX2 = getWidth();
                 }
-                if (rangeSelectX2 < offsetX) {
-                    rangeSelectX2 = offsetX;
+                if (rangeSelectX2 < waveOffsetX) {
+                    rangeSelectX2 = waveOffsetX;
                 }
                 repaint();
                 super.mouseDragged(e);  
@@ -502,7 +447,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                if (e.getX() > offsetX) {
+                if (e.getX() > waveOffsetX) {
                     rangeSelectX1 = e.getX();
                     rangeSelectX2 = -1;
                     repaint();
@@ -532,7 +477,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
                 {
                     int id;
                     for (id=0; id<Wave.size(); id++) {
-                        if ( getLineY0(id) < y && y < getLineY2(id)) {
+                        if ( Wave.getLineY0(id) < y && y < Wave.getLineY2(id)) {
                             break;
                         }
                     }

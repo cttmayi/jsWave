@@ -22,7 +22,8 @@ public class TimeRuler extends Widget{
     }
 
     private long timeOffset, timeOffset2;
-    private int timeRulerPoint;
+    private int timeTimeRulerPoint;
+    private Color colorTimeRulerPoint;
     
     public long getTimeOffset() {
         return timeOffset;
@@ -30,15 +31,15 @@ public class TimeRuler extends Widget{
     public long getTimeOffset2() {
         return timeOffset2;
     }
-    
-    
+
     public void setTimeRuler(long us, long us2) {
         timeOffset = us;
         timeOffset2 = us2;
     }
 
-    public void setTimePoint(int us) {
-        timeRulerPoint = us;
+    public void setTimePoint(int us, int colori) {
+        timeTimeRulerPoint = us;
+        colorTimeRulerPoint = Util.colorMake(colori);
     }
 
     private int getTime(int x){
@@ -81,7 +82,7 @@ public class TimeRuler extends Widget{
             }
         }
 
-        g.setColor(Color.RED);
-        g.fillOval(getX(timeRulerPoint)-4, Util.fontHeight * 2 + 2 - 4, 8, 8);
+        g.setColor(colorTimeRulerPoint);
+        g.fillOval(getX(timeTimeRulerPoint)-4, Util.fontHeight * 2 + 2 - 4, 8, 8);
     }
 }
