@@ -32,20 +32,18 @@ public class JsWaveJFrame extends javax.swing.JFrame {
         initUI();
     }
 
-    
     public WaveJPanel getPanel() {
         return waveJPanel;
     }
-    
+
     JsEnv jsEnv;
-    
+
     private void initSciprt() {
         Script script = Script.getScript();
         script.setFrame(this);
-        
+
         jsEnv = JsEnv.getJsEnv(this);
-        
-        
+
         String jarPath = Util.getJarPath();
         String defaultJs = jarPath + "default.js";
         String libPath = jarPath + "libs\\";
@@ -61,7 +59,7 @@ public class JsWaveJFrame extends javax.swing.JFrame {
                 }  
             }
         }
-        
+
         if (Util.getPara(Util.PARA_PATH) != null) {
             if (Util.isFileExist(Util.getPara(Util.PARA_PATH))) {
                 jsEnv.loadFile(Util.getPara(Util.PARA_PATH));
@@ -79,13 +77,13 @@ public class JsWaveJFrame extends javax.swing.JFrame {
         jSplitPaneLR.setDividerLocation(jSplitPaneLR.getWidth() - 240);
         jSplitPaneLR.setOneTouchExpandable(true);
         jSplitPaneLR.setResizeWeight(1.0);
-        
+
         jSplitPaneUD.setDividerLocation(0.7);
         jSplitPaneUD.setResizeWeight(0.7);
- 
+
         waveJPanel.setMinimumSize(new Dimension(600,500));
         jScrollPaneU.setMinimumSize(new Dimension(200,100));
-        
+
         this.addWindowStateListener(new WindowStateListener () {
             @Override 
             public void windowStateChanged(WindowEvent state) {
@@ -99,7 +97,7 @@ public class JsWaveJFrame extends javax.swing.JFrame {
             @Override 
             public void keyTyped(KeyEvent e) { 
             } 
- 
+
             @Override 
             public void keyPressed(KeyEvent e) { 
                 String keyText = KeyEvent.getKeyText(e.getKeyCode()); 
@@ -118,7 +116,7 @@ public class JsWaveJFrame extends javax.swing.JFrame {
                     }
                 } 
             } 
- 
+
             @Override 
             public void keyReleased(KeyEvent e) { 
 
@@ -154,12 +152,11 @@ public class JsWaveJFrame extends javax.swing.JFrame {
         }
         jTableInfo.invalidate();
     }
-    
+
     public void setText(String text) {
         jTextAreaInfo.setText(text);
     }
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

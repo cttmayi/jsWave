@@ -18,7 +18,7 @@ public class Info {
     public String info;
     public Color fgColor;
     public Color bgColor;
-    
+
     public static Info newData(int x, int y, String name, int fg, int bg) {
         Info info = new Info();
         info.x = x;

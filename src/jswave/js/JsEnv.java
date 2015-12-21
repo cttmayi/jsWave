@@ -21,7 +21,6 @@ import jswave.ui.JsWaveJFrame;
  * @author cttmayi
  */
 public class JsEnv {
-
     ScriptEngine engine;
 
     static JsEnv jsEnv;
@@ -35,7 +34,6 @@ public class JsEnv {
     
     public JsWaveJFrame frame;    
 
-    
     public JsEnv(){
         ScriptEngineManager mgr = new ScriptEngineManager();    
         engine = mgr.getEngineByExtension("js");
@@ -46,8 +44,7 @@ public class JsEnv {
             engine.eval(loadAFileToString(filename));
         } catch (ScriptException ex) {
             Logger.getLogger(JsEnv.class.getName()).log(Level.SEVERE, null, ex);
-        }        
-        
+        }
     }
     
     public void loadString(String soucre) {
@@ -56,7 +53,7 @@ public class JsEnv {
         } catch (ScriptException ex) {
             Logger.getLogger(JsEnv.class.getName()).log(Level.SEVERE, null, ex);
         }
-    } 
+    }
     
     public void defineFuntion(String function) {
         loadString("function " + function + "(){}");
@@ -64,7 +61,7 @@ public class JsEnv {
     
     public boolean invokeFunction(String functionname, Object ... args) {
         Invocable inv = (Invocable) engine;
-        try {          
+        try {
             inv.invokeFunction(functionname, args);
         } catch (ScriptException ex) {
             Logger.getLogger(JsEnv.class.getName()).log(Level.SEVERE, null, ex);
@@ -96,5 +93,4 @@ public class JsEnv {
         }
         return ret;        
     }
-    
 }

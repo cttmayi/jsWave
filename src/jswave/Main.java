@@ -12,8 +12,6 @@ import jswave.ui.JsWaveJFrame;
  * @author cttmayi
  */
 public class Main {
-
-    
     /**
      * @param args the command line arguments
      */
@@ -52,5 +50,4 @@ public class Main {
             }
         });
     }
-    
 }

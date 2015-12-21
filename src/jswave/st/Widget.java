@@ -17,26 +17,24 @@ public class Widget {
 
     public boolean enable = true;
     public int group = -1;
-    
+
     public static int timeX, timeW;
     public static int offsetLine;
-    //public static int rangeX1, rangeX2;
-    
-    public static int offsetX, offsetY;
-    
-    public static int screenW, screenH;
-    
-    public static Color colorFont;
-    
-    public static void drawString(Graphics g, String name, int px, int py, int pw, int ph, boolean up, Color fgColor, Color bgColor) {
 
+    public static int offsetX, offsetY;
+
+    public static int screenW, screenH;
+
+    public static Color colorFont;
+
+    public static void drawString(Graphics g, String name, int px, int py, int pw, int ph, boolean up, Color fgColor, Color bgColor) {
         String[] infos = name.split("\n");
-        int length = ph/Util.FontHeight;
+        int length = ph/Util.fontHeight;
         
         if (length > infos.length) {
             length = infos.length;
         }
-        int h = Util.FontHeight * length;
+        int h = Util.fontHeight * length;
 
         int w = 0;
         for (int i=0; i<length; i++) {
@@ -49,7 +47,7 @@ public class Widget {
         if (w > pw) {
             w = pw;
         }
-        
+
         int x = px;
         int y = py;
 
@@ -70,7 +68,7 @@ public class Widget {
             else {
                 str = infos[i];
             }
-            g.drawString(str, x, y + Util.FontHeight * (i+1));
+            g.drawString(str, x, y + Util.fontHeight * (i+1));
         }
     }
     
@@ -83,5 +81,4 @@ public class Widget {
         drawString(g, name, 2, y, offsetX - 4, height, 
                     true, colorFont, color);
     }
-    
 }

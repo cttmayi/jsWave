@@ -14,61 +14,57 @@ import jswave.Util;
  *
  * @author cttmayi
  */
-public class Data extends Widget{
-    
+public class Wave extends Widget{
     public static int LINE = 0;
     public static int DIAGRAM = 1;
     public static int HISTOGRAM = 2;
-    
 
     public int type;
-    
+
     private String name = null;
-    
+
     public Color outBorderColor = null;
-    
+
     private final ArrayList<Touch> touchs;
-    
+
     private int heightMax = 10;
-    
+
     private int yStart = 0;
     private int yEnd = 0;
     
     private boolean isCallbackEnable;
 
-    public Data() {
+    public Wave() {
         this.isCallbackEnable = true;
         this.touchs = new ArrayList<Touch>();
     }
-    
+
     public void setHeightMax(int height) {
         if (heightMax < height) {
             heightMax = height;
         }
     }
-    
+
     public int getHeightMax() {
         return heightMax;
     }
-    
+
     public void clearTouch() {
         touchs.clear();
     }
-    
+
     public void addTouch (int id, int x1, int y1, int x2, int y2) {
         touchs.add(Touch.newData(id, x1, y1, x2, y2));
     }
-    
-    
+
     public void setCallbackEnable(boolean enable) {
         isCallbackEnable = enable;
     }
-    
-    
+
     public boolean inLine (int y) {
         return getY0() <= y && y <= getY2();
     }
-    
+
     public int getCallbackId(int x, int y) {
         int id = -1;
         if (isCallbackEnable && enable && inLine(y)) {
@@ -93,7 +89,7 @@ public class Data extends Widget{
         }
         return false;
     }
-    
+
     public void setY(int start, int end) {
         yStart = start;
         yEnd = end;
@@ -107,7 +103,7 @@ public class Data extends Widget{
             return yEnd;
         }
     }    
-    
+
     public int getY1() {
         return yStart;
     }
@@ -115,31 +111,31 @@ public class Data extends Widget{
     public int getY2() {
         return yEnd;
     }
-    
+
     public int getYM() {
         return (yStart + yEnd)/2;
     }    
-    
+
     public void setTime(ArrayList<Integer> time) {
         listTime = time;    
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public String getName() {
         return this.name;
     }
+
     public ArrayList<Integer> getX(int ts, int xs, double wdt) {
         listX = timeToX(listTime, ts, xs, wdt);
         return listX;
     }
-    
+
     public ArrayList<Integer> listTime = new ArrayList<Integer>();
-    
     public ArrayList<Integer> listX = new ArrayList<Integer>();
-    
+
     public ArrayList<Integer> timeToX(ArrayList<Integer> times,  int ts, int xs, double wdt) {
         ArrayList<Integer> x = new ArrayList<Integer>();
         for (Integer t:times) {
@@ -147,15 +143,13 @@ public class Data extends Widget{
         }
         return x;
     }
-    
+
     public static Color ColorMake(int colori) {
         return Util.colorMake(colori);
     }
-    
 
-    
     public void draw(Graphics g, int y, double wdt) {
         
     }
-    
+
 }

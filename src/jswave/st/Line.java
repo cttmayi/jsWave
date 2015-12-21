@@ -14,20 +14,17 @@ import jswave.Util;
  *
  * @author cttmayi
  */
-public class Line extends Data {
+public class Line extends Wave {
     public static final int lineHeight = 3;
-    
-    
+
     public ArrayList<Color> listColor = new ArrayList<Color>();
     public ArrayList<Integer> listY = new ArrayList<Integer>();
     public ArrayList<String> listName = new ArrayList<String>();
-    
-    
-    
+
     public static Line newData(ArrayList<Integer> time, ArrayList<Integer> colors, ArrayList<Integer> ys, ArrayList<String> names) {
         Line list = new Line();
-        list.type = Data.LINE;
-        
+        list.type = Wave.LINE;
+
         for (int id=0; id<colors.size(); id++) {
             Color color = ColorMake(colors.get(id));
             list.listColor.add(color);
@@ -37,7 +34,7 @@ public class Line extends Data {
         list.listName = names;
         
         for (int y: ys) {
-            list.setHeightMax(y + Util.FontHeight);
+            list.setHeightMax(y + Util.fontHeight);
         }
 
         return list;
@@ -51,7 +48,7 @@ public class Line extends Data {
         if (timeStart < offsetX) timeStart = offsetX;
 
         drawName(g, getName(), y, getHeightMax());
-        
+
         setY(y - Line.lineHeight, y);
         clearTouch();
         for (int timeId=1; timeId<x.size(); timeId++) {
@@ -59,7 +56,7 @@ public class Line extends Data {
 
             g.setColor(listColor.get(timeId));
             int timeEnd = x.get(timeId);
-            
+
             int yy = y;
             if (timeId < listY.size()) {
                 yy = y - listY.get(timeId);
@@ -78,7 +75,7 @@ public class Line extends Data {
             }
 
             timeStart = timeEnd;
-            
+
             if (timeStart > screenW) break;
         }
     }    

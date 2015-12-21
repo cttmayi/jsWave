@@ -14,7 +14,6 @@ import jswave.Util;
  * @author lenovo
  */
 public class Script {
-    
     static Script script;
     public static Script getScript() {
         if (script == null) {
@@ -22,74 +21,72 @@ public class Script {
         }
         return script;
     }
-    
+
     JsWaveJFrame frame;
-    
+
     public void setFrame(JsWaveJFrame frame) {
         this.frame = frame;
     }
-    
+
     public void setTimeRuler(Number us, Number us2) {
         this.frame.getPanel().setTimeRuler(us.longValue(), us2.longValue());
     }
-    
+
     public void setTimePoint(Number us) {
         this.frame.getPanel().setTimePoint(us.intValue());
     }
-    
-    
-    
+
     public void setRangeListener(String name) {
         if (name.equals("")) {
-            this.frame.getPanel().funRangeListener = null;
+            this.frame.getPanel().funSelectRangeListener = null;
         }
         else {
-            this.frame.getPanel().funRangeListener = name;
+            this.frame.getPanel().funSelectRangeListener = name;
         }
     }
 
     public void setSelectListener(String name) {
         if (name.equals("")) {
-            this.frame.getPanel().funSelectListener = null;
+            this.frame.getPanel().funSelectItemListener = null;
         }
         else {
-            this.frame.getPanel().funSelectListener = name;
+            this.frame.getPanel().funSelectItemListener = name;
         }
     }
 
     public void setConnectionListener(String name) {
         if (name.equals("")) {
-            this.frame.getPanel().funConnectionListener = null;
+            this.frame.getPanel().funConnectionMoveListener = null;
         }
         else {
-            this.frame.getPanel().funConnectionListener = name;
+            this.frame.getPanel().funConnectionMoveListener = name;
         }
     }
 
     public void setWaveListener(String name) {
         if (name.equals("")) {
-            this.frame.getPanel().funWaveListener = null;
+            this.frame.getPanel().funWaveMoveListener = null;
         }
         else {
-            this.frame.getPanel().funWaveListener = name;
+            this.frame.getPanel().funWaveMoveListener = name;
         }
     }
     
     public void setClickListener(String name) {
         if (name.equals("")) {
-            this.frame.getPanel().funClickListener = null;
+            this.frame.getPanel().funWaveClickListener = null;
         }
         else {
-            this.frame.getPanel().funClickListener = name;
+            this.frame.getPanel().funWaveClickListener = name;
         }
     }    
 
     public void setNameListener(String name) {
         if (name.equals("")) {
-            this.frame.getPanel().funNameListener = null;
+            this.frame.getPanel().funWaveNameListener = null;
         }
         else {
-            this.frame.getPanel().funNameListener = name;
+            this.frame.getPanel().funWaveNameListener = name;
         }
     }    
     
@@ -117,7 +114,7 @@ public class Script {
                 time = timei.get(i);
             }
         }
-        
+
         if (!times.isEmpty()) {
             return this.frame.getPanel().addLine(name, timei, colori, yi, names);
         }
@@ -131,7 +128,7 @@ public class Script {
         ArrayList<Integer> timei2 = Util.an2i(times2);
         ArrayList<Integer> yi = Util.an2i(ys);
         ArrayList<Integer> colori = Util.an2i(colors);
-        
+
         if (Util.isDebug) {
             System.out.println("addHistogram:" + name);
             int time = Integer.MIN_VALUE;
@@ -151,29 +148,28 @@ public class Script {
                 }
             }
         }
-        
+
         if (!times.isEmpty()) {   
             return this.frame.getPanel().addHistogram(name, timei, timei2, yi, colori, names, heightMax);
         }
-        
+
         return -1;
     }
     
     public int addConnection(double time, double start, double end, double color) {
         return this.frame.getPanel().addConnection((int)time, (int)start, (int)end, (int)color);
     }
-    
+
     public void setTable(ArrayList<String> names, ArrayList<String> datas, ArrayList<String> datars) {
         this.frame.setTable(names, datas, datars);
     }
-    
+
     public void setText(String text) {
         this.frame.setText(text);
     }
 
     public void setInfo(ArrayList<Number> xs, ArrayList<Number> ys, 
             ArrayList<String> names, ArrayList<Number> fgcs, ArrayList<Number> bgcs) {
-        
         ArrayList<Integer> xi = Util.an2i(xs);
         ArrayList<Integer> yi = Util.an2i(ys);
         ArrayList<Integer> fi = Util.an2i(fgcs);
@@ -181,16 +177,12 @@ public class Script {
         
         this.frame.getPanel().setInfo(xi, yi, names, fi, bi);
     }
-    
+
     public void debug(Number debug) {
         Util.isDebug = (debug.intValue() != 0);
     }
-    
+
     public void print(String str) {
         System.out.println(str);
     }
-    
-    
-    
-    
 }

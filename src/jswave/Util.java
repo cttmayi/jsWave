@@ -22,9 +22,9 @@ public class Util {
 
     public static int PARA_PATH = 0; 
 
-    public static final Font FontArial = new Font("Arial", Font.PLAIN, 12);
-    private static final FontMetrics fontArialMetrics = Toolkit.getDefaultToolkit().getFontMetrics(FontArial);;
-    public static final int FontHeight = fontArialMetrics.getHeight();
+    public static final Font fontArial = new Font("Arial", Font.PLAIN, 12);
+    private static final FontMetrics fontArialMetrics = Toolkit.getDefaultToolkit().getFontMetrics(fontArial);;
+    public static final int fontHeight = fontArialMetrics.getHeight();
     
     public static boolean isDebug = false;
     
@@ -220,6 +220,4 @@ public class Util {
             return String.format("%dus",((t))/Util.US);
         }
     }
-    
-    
 }

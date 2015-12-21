@@ -28,13 +28,12 @@ public class Connection extends Widget{
 
     public int getX(int ts, int xs, double wdt) {
         return Util.getX(time, xs, ts, wdt);
-        //return (int)((time - ts) * wdt) + xs;
     }
-    
+
     public int getTime() {
         return time;
     }
-    
+
     public static Connection newData(int time, int start, int end, int color) {
         Connection list = new Connection();
         list.time = time;
@@ -45,7 +44,6 @@ public class Connection extends Widget{
     }
 
     public void draw(Graphics g, WaveJPanel panel, double wdt) {
-
         if (enable) {
             int x = getX(timeX, offsetX, wdt);
 

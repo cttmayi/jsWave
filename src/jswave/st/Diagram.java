@@ -12,15 +12,15 @@ import java.util.ArrayList;
  *
  * @author cttmayi
  */
-public class Diagram extends Data{
+public class Diagram extends Wave{
     public Color color;
-    
+
     public int width;
     public ArrayList<Integer> listY = new ArrayList<Integer>();
-    
+
     public static Diagram newData(ArrayList<Integer> time, ArrayList<Integer> ys, int heightMax, int color) {
         Diagram list = new Diagram();
-        list.type = Data.DIAGRAM;
+        list.type = Wave.DIAGRAM;
         list.color = ColorMake(color);
         list.listTime = time;
         for (Integer y : ys) {
@@ -32,5 +32,5 @@ public class Diagram extends Data{
         list.setHeightMax(heightMax);
         return list;
     }
-    
+
 }
