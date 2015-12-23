@@ -146,32 +146,6 @@ public final class WaveJPanel extends javax.swing.JPanel {
         return l;
     }
 
-    private int getLineGroup(int line) {
-        for (int id=0; id<Group.size(); id++) {
-            if (Group.get(id).isInGroup(line)) {
-                return id;
-            }
-        }
-        return -1;
-    }
-
-    public void updateGroupStatus() {
-        for (int id=0; id<Wave.size(); id ++ ) {
-            Wave list = Wave.get(id);
-            list.group = getLineGroup(id);
-            
-            if (list.group >= 0) {
-                list.enable = Group.get(list.group).enable;
-            }
-            else {
-                list.enable = true;
-            }
-        }
-        for (Connection c : Connection.getArray()) {
-            c.enable = Wave.get(c.start).enable && Wave.get(c.end).enable;
-        }
-    }
-
     public void updateTimeLimit(ArrayList<Integer> time) {
         int x2 = time.get(time.size()-1);
         int x1 = time.get(0);
@@ -180,38 +154,6 @@ public final class WaveJPanel extends javax.swing.JPanel {
         }
         if (timeLimitX2 < x2) {
             timeLimitX2 = x2;
-        }
-    }
-
-    public void setInfo(ArrayList<Integer> xs, ArrayList<Integer> ys, 
-            ArrayList<String> names, ArrayList<Integer> fgcs, ArrayList<Integer> bgcs) {
-        Info.clear();
-        for (int id=0; id<xs.size(); id++) {
-            Info.add(xs.get(id), ys.get(id), names.get(id), fgcs.get(id), bgcs.get(id));
-
-        }
-    }
-
-    public void drawTimeRuler(Graphics g, int y) {
-        TimeRuler.getData().draw(g, y);
-    }
-
-    private void drawConnection(Graphics g, double wdt) {
-        for (Connection data : Connection.getArray()) {
-            data.draw(g, wdt);
-        }
-    }
-
-    private void drawGroup(Graphics g, double wdt, int g_gap) {
-        for (Group group : Group.getArray()) {
-            group.draw(g, wdt, g_gap);
-        }
-    }
-
-    private void drawInfo(Graphics g) {
-        for (Info info: Info.getArray()) {
-            Widget.drawString(g, info.info, getX(info.x), Wave.getLineM(info.y), Integer.MAX_VALUE, Integer.MAX_VALUE, 
-                    false, info.fgColor, info.bgColor);
         }
     }
 
@@ -258,11 +200,6 @@ public final class WaveJPanel extends javax.swing.JPanel {
             }
         }
     }
-    
-    private void drawSplitLine(Graphics g, int y, int h, Color color) {
-        g.setColor(color);
-        g.fillRect(0, y, getWidth(), h);
-    }
 
     @Override
     public void paintComponent(Graphics g){ 
@@ -286,38 +223,12 @@ public final class WaveJPanel extends javax.swing.JPanel {
         int gap = 5;
         int g_gap = Util.fontHeight / 2 * 3;
 
-        drawTimeRuler(g, 0);
-
-        int y = waveOffsetY;
-        int groupId = -1; 
-        for (int id=offsetLine; id<Wave.size(); id ++) {
-            Wave list = Wave.get(id);
-            if (groupId != list.group) {
-                y += g_gap;
-                groupId = list.group;
-            }
-            else if (list.enable) {
-                y += gap;
-            }
-
-            if (list.enable) {
-                y += list.getHeightMax();
-                drawSplitLine(g, y, 1, colorSelect);
-                if (y < getHeight()) {
-                    list.draw(g, y, wdt);
-                }
-                else {
-                    list.setY(y, y);
-                }
-            }
-            else {
-                list.setY(y, y);
-            }
-        }
-        drawConnection(g, wdt);
-        drawGroup(g, wdt, g_gap);
-
-        drawInfo(g);
+        TimeRuler.show(g, 0);
+        
+        Wave.show(g, waveOffsetY, wdt, gap, g_gap);
+        Connection.show(g, wdt);
+        Group.show(g, wdt, g_gap);
+        Info.show(g);
         drawFrame(g);
     }
 
@@ -504,12 +415,12 @@ public final class WaveJPanel extends javax.swing.JPanel {
                     if ( group.y0 < y && y < group.y2) {
                         if (group.enable && (clicked == false) ){
                             group.enable = false;
-                            updateGroupStatus();
+                            Group.updateGroupStatus();
                             repaint();
                         }
                         else if (!group.enable){
                             group.enable = true;
-                            updateGroupStatus();
+                            Group.updateGroupStatus();
                             repaint();
                         }
                     }

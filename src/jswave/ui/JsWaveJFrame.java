@@ -16,20 +16,40 @@ import javax.swing.table.DefaultTableModel;
 import jswave.Util;
 import jswave.js.JsEnv;
 import jswave.js.Script;
+import jswave.st.Group;
 
 /**
  *
  * @author cttmayi
  */
 public class JsWaveJFrame extends javax.swing.JFrame {
+
+    class FKeyListener {
+        public String key;
+        public String func;
+        
+        public FKeyListener(String key, String func) {
+            this.key = key;
+            this.func = func;
+        }
+    }
+    
+    private ArrayList<FKeyListener> keyListeners = new ArrayList<FKeyListener>();
+    
+    public void addKeyListener(String key, String func) {
+        keyListeners.add(new FKeyListener(key, func));
+    }
+    
     /**
      * Creates new form jsWaveJFrame
      */
     public JsWaveJFrame() {
         initComponents();
+        keyListeners.clear();
         initSciprt();
         initKey();
         initUI();
+        
     }
 
     public WaveJPanel getPanel() {
@@ -69,7 +89,7 @@ public class JsWaveJFrame extends javax.swing.JFrame {
         }
 
         waveJPanel.setTimeRange(Integer.MIN_VALUE,  Integer.MAX_VALUE);
-        waveJPanel.updateGroupStatus();
+        Group.updateGroupStatus();
     }
 
     private void initUI() {
@@ -112,6 +132,13 @@ public class JsWaveJFrame extends javax.swing.JFrame {
                     }
                     else if (keyText.equals("D")) {
                         waveJPanel.moveRight();
+                    }
+                    
+                    for (FKeyListener keyListener : keyListeners) {
+                        if (keyText.equals(keyListener.key)) {
+                            JsEnv.getJsEnv(null).invokeFunction(keyListener.func);
+                            repaint();
+                        }
                     }
                 } 
             } 

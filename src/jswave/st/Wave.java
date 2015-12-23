@@ -74,6 +74,8 @@ public class Wave extends Widget{
     public static int DIAGRAM = 1;
     public static int HISTOGRAM = 2;
 
+    private static final Color colorSplitLine = new Color(255,0,0,30);
+
     public int type;
 
     private String name = null;
@@ -207,4 +209,36 @@ public class Wave extends Widget{
         
     }
 
+    
+    public static void show(Graphics g, int y, double wdt, int gap, int g_gap) {
+        int groupId = -1;
+        for (int id=offsetLine; id<Wave.size(); id ++) {
+            Wave list = Wave.get(id);
+            if (groupId != list.group) {
+                y += g_gap;
+                groupId = list.group;
+            }
+            else if (list.enable) {
+                y += gap;
+            }
+
+            if (list.enable) {
+                y += list.getHeightMax();
+
+                g.setColor(colorSplitLine);
+                g.fillRect(0, y, screenW, 1);
+                
+                if (y < screenH) {
+                    list.draw(g, y, wdt);
+                }
+                else {
+                    list.setY(y, y);
+                }
+            }
+            else {
+                list.setY(y, y);
+            }
+        }
+    }
+    
 }

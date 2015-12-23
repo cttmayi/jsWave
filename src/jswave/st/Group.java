@@ -9,7 +9,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import jswave.Util;
-import jswave.ui.WaveJPanel;
 
 /**
  *
@@ -80,6 +79,32 @@ public class Group extends Widget {
         }
     }
 
+    private static int getLineGroup(int line) {
+        for (int id=0; id<Group.size(); id++) {
+            if (Group.get(id).isInGroup(line)) {
+                return id;
+            }
+        }
+        return -1;
+    }
+
+    public static void updateGroupStatus() {
+        for (int id=0; id<Wave.size(); id ++ ) {
+            Wave list = Wave.get(id);
+            list.group = getLineGroup(id);
+            
+            if (list.group >= 0) {
+                list.enable = Group.get(list.group).enable;
+            }
+            else {
+                list.enable = true;
+            }
+        }
+        for (Connection c : Connection.getArray()) {
+            c.enable = Wave.get(c.start).enable && Wave.get(c.end).enable;
+        }
+    }
+    
     public void draw(Graphics g, double wdt, int g_gap) {
 
         y0 = Wave.getLineY0(start) - g_gap/3*2;
@@ -98,6 +123,12 @@ public class Group extends Widget {
 
         g.fillRect(0, y0, offsetX-2, Util.fontHeight + 2);
         drawName(g, name, y0 + Util.fontHeight, Util.fontHeight);
+    }
+    
+    public static void show(Graphics g, double wdt, int g_gap) {
+        for (Group group : Group.getArray()) {
+            group.draw(g, wdt, g_gap);
+        }
     }
 }
 

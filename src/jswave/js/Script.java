@@ -43,6 +43,10 @@ public class Script {
         TimeRuler.getData().setTimePoint(us.intValue(), color.intValue());
     }
 
+    public void addKeyListener(String key, String func) {
+        this.frame.addKeyListener(key, func);
+    }
+
     public void setRangeListener(String name) {
         if (name.equals("")) {
             this.frame.getPanel().funSelectRangeListener = null;
@@ -78,7 +82,7 @@ public class Script {
             this.frame.getPanel().funWaveMoveListener = name;
         }
     }
-    
+
     public void setClickListener(String name) {
         if (name.equals("")) {
             this.frame.getPanel().funWaveClickListener = null;
@@ -96,15 +100,15 @@ public class Script {
             this.frame.getPanel().funWaveNameListener = name;
         }
     }    
-    
+
     public int addGroup(String name, Number start, Number end, Number colori, boolean enable) {
         return Group.add(name, start.intValue(), end.intValue(), colori.intValue(), enable);
     }
-    
+
     public void clearGroup() {
         Group.clear();
     }
-    
+
     public boolean getGroupStatus(int id) {
         return Group.getStatus(id);
     }
@@ -118,7 +122,7 @@ public class Script {
             System.out.println("[ERROR][setWaveOutBorderColor] ID:" + id + " LINE ERROR! (>=" + Wave.size() + ")");
         }
     }
-    
+
     public int addLine(String name, ArrayList<Number> times, ArrayList<Number> colors, ArrayList<Number> ys, ArrayList<String> names) {
         ArrayList<Integer> timei = Util.an2i(times);
         ArrayList<Integer> colori = Util.an2i(colors);
@@ -186,8 +190,7 @@ public class Script {
         Group.clear();
         Wave.clear();
     }
-    
-    
+
     public int addConnection(Number time, Number start, Number end, Number color) {
         if (start.intValue() < Wave.size() && end.intValue() < Wave.size()) {
             Connection.add(time.intValue(), start.intValue(), end.intValue(), color.intValue());
@@ -201,7 +204,7 @@ public class Script {
     public void clearConnection() {
         Connection.clear();
     }
-    
+
     public void setTable(ArrayList<String> names, ArrayList<String> datas, ArrayList<String> datars) {
         this.frame.setTable(names, datas, datars);
     }
@@ -210,14 +213,17 @@ public class Script {
         this.frame.setText(text);
     }
 
-    public void setInfo(ArrayList<Number> xs, ArrayList<Number> ys, 
+    public void setInfo(ArrayList<Number> times, ArrayList<Number> lines, 
             ArrayList<String> names, ArrayList<Number> fgcs, ArrayList<Number> bgcs) {
-        ArrayList<Integer> xi = Util.an2i(xs);
-        ArrayList<Integer> yi = Util.an2i(ys);
+        ArrayList<Integer> ti = Util.an2i(times);
+        ArrayList<Integer> li = Util.an2i(lines);
         ArrayList<Integer> fi = Util.an2i(fgcs);
-        ArrayList<Integer> bi = Util.an2i(bgcs);       
+        ArrayList<Integer> bi = Util.an2i(bgcs);
         
-        this.frame.getPanel().setInfo(xi, yi, names, fi, bi);
+        Info.clear();
+        for (int id=0; id<ti.size(); id++) {
+            Info.add(ti.get(id), li.get(id), names.get(id), fi.get(id), bi.get(id));
+        }
     }
 
     public void debug(Number debug) {

@@ -102,4 +102,10 @@ public class Connection extends Widget{
             }
         }
     }
+
+    public static void show(Graphics g, double wdt) {
+        for (Connection data : Connection.getArray()) {
+            data.draw(g, wdt);
+        }
+    }
 }

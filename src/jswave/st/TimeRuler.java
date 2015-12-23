@@ -85,4 +85,9 @@ public class TimeRuler extends Widget{
         g.setColor(colorTimeRulerPoint);
         g.fillOval(getX(timeTimeRulerPoint)-4, Util.fontHeight * 2 + 2 - 4, 8, 8);
     }
+    
+    public static void show(Graphics g, int y) {
+        TimeRuler.getData().draw(g, y);
+    }
+    
 }
