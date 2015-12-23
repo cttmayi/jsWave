@@ -51,6 +51,9 @@ public class Group extends Widget {
         return Group.add(group);
     }
     
+    public static boolean getStatus(int id) {
+        return array.get(id).enable;
+    }
     
     public String name;
 

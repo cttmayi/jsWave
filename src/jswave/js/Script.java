@@ -105,6 +105,9 @@ public class Script {
         Group.clear();
     }
     
+    public boolean getGroupStatus(int id) {
+        return Group.getStatus(id);
+    }
     
     public void setWaveOutBorderColor(int id, int color) {
         if (id < Wave.size() ) {
