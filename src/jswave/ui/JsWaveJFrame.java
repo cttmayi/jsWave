@@ -34,12 +34,12 @@ public class JsWaveJFrame extends javax.swing.JFrame {
         }
     }
     
-    private ArrayList<FKeyListener> keyListeners = new ArrayList<FKeyListener>();
+    private final ArrayList<FKeyListener> keyListeners = new ArrayList<FKeyListener>();
     
     public void addKeyListener(String key, String func) {
         keyListeners.add(new FKeyListener(key, func));
     }
-    
+
     /**
      * Creates new form jsWaveJFrame
      */
@@ -119,21 +119,12 @@ public class JsWaveJFrame extends javax.swing.JFrame {
 
             @Override 
             public void keyPressed(KeyEvent e) { 
-                String keyText = KeyEvent.getKeyText(e.getKeyCode()); 
-                if (!e.isActionKey()) { 
-//                    if (keyText.equals("W")) {
-//                        waveJPanel.scalerUp();
-//                    }
-//                    else if (keyText.equals("S")) {
-//                        waveJPanel.scalerDown();
-//                    }
-//                    else if (keyText.equals("A")) {
-//                        waveJPanel.moveLeft();
-//                    }
-//                    else if (keyText.equals("D")) {
-//                        waveJPanel.moveRight();
-//                    }
-                    
+                
+                if (!e.isActionKey()) {
+                    String keyText = KeyEvent.getKeyText(e.getKeyCode());
+                    if(Util.isDebug) {
+                        System.out.println("Input Key: " + keyText);
+                    }
                     for (FKeyListener keyListener : keyListeners) {
                         if (keyText.equals(keyListener.key)) {
                             JsEnv.getJsEnv(null).invokeFunction(keyListener.func);

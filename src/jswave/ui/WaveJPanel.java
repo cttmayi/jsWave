@@ -108,25 +108,6 @@ public final class WaveJPanel extends javax.swing.JPanel {
         repaint();
     }
 
-
-//    public void moveLeft() {
-//        setTimeRange(timeX - timeW/10, timeW);
-//    }
-
-//    public void moveRight() {
-//        setTimeRange(timeX + timeW/10, timeW);
-//    }    
-
-//    public void scalerDown() {
-//        int w = timeW * 4 / 3;
-//        setTimeRange(timeX , w);
-//    }
-
-//    public void scalerUp() {
-//        int w = timeW * 3 / 4;
-//        setTimeRange(timeX , w);
-//    }   
-
     private int getW() {
         return getWidth() - waveOffsetX;
     }
