@@ -39,6 +39,18 @@ public class Script {
         TimeRuler.getData().setTimeRuler(us.longValue(), us2.longValue());
     }
 
+    public void setTimeRange(Number x, Number w) {
+        this.frame.getPanel().setTimeRange(x.intValue(), w.intValue());
+    }
+
+    public int getTimeOffset() {
+        return this.frame.getPanel().getTimeOffset();
+    }
+
+    public int getTimeWidth() {
+        return this.frame.getPanel().getTimeWidth();
+    }
+
     public void setTimePoint(Number us, Number color) {
         TimeRuler.getData().setTimePoint(us.intValue(), color.intValue());
     }

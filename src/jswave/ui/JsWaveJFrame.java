@@ -121,18 +121,18 @@ public class JsWaveJFrame extends javax.swing.JFrame {
             public void keyPressed(KeyEvent e) { 
                 String keyText = KeyEvent.getKeyText(e.getKeyCode()); 
                 if (!e.isActionKey()) { 
-                    if (keyText.equals("W")) {
-                        waveJPanel.scalerUp();
-                    }
-                    else if (keyText.equals("S")) {
-                        waveJPanel.scalerDown();
-                    }
-                    else if (keyText.equals("A")) {
-                        waveJPanel.moveLeft();
-                    }
-                    else if (keyText.equals("D")) {
-                        waveJPanel.moveRight();
-                    }
+//                    if (keyText.equals("W")) {
+//                        waveJPanel.scalerUp();
+//                    }
+//                    else if (keyText.equals("S")) {
+//                        waveJPanel.scalerDown();
+//                    }
+//                    else if (keyText.equals("A")) {
+//                        waveJPanel.moveLeft();
+//                    }
+//                    else if (keyText.equals("D")) {
+//                        waveJPanel.moveRight();
+//                    }
                     
                     for (FKeyListener keyListener : keyListeners) {
                         if (keyText.equals(keyListener.key)) {
