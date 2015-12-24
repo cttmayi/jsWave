@@ -35,6 +35,10 @@ public class Script {
         this.frame = frame;
     }
 
+    public void setTitle(String name) {
+        this.frame.setTitle(name);
+    }
+    
     public void setTimeRuler(Number us, Number us2) {
         TimeRuler.getData().setTimeRuler(us.longValue(), us2.longValue());
     }
