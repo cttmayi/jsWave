@@ -41,7 +41,7 @@ public class JsEnv {
     
     public void loadFile(String filename) {
         //if (Util.isDebug) {
-        System.out.println("LoadFile: " + filename);
+        //System.out.println("LoadFile: " + filename);
         //}
         try {
             engine.eval(loadAFileToString(filename));
