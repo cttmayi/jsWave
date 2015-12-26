@@ -40,6 +40,9 @@ public class JsEnv {
     }
     
     public void loadFile(String filename) {
+        //if (Util.isDebug) {
+        System.out.println("LoadFile: " + filename);
+        //}
         try {
             engine.eval(loadAFileToString(filename));
         } catch (ScriptException ex) {
@@ -48,6 +51,7 @@ public class JsEnv {
     }
     
     public void loadString(String soucre) {
+
         try {
             engine.eval(soucre);
         } catch (ScriptException ex) {

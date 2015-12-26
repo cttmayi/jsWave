@@ -284,19 +284,23 @@ public final class WaveJPanel extends javax.swing.JPanel {
             for (i=0; i<size; i++) {
                 Wave wave = Wave.get(i);
 
-                if (wave.inNameZone(x, y)) {
-                    itemNameMoveSelected = i;
-                    JsEnv.getJsEnv(null).invokeFunction(funWaveNameListener, getTime(x), i);
-                    repaint();
-                    return;                    
+                if (funWaveNameListener != null) {
+                    if (wave.inNameZone(x, y)) {
+                        itemNameMoveSelected = i;
+                        JsEnv.getJsEnv(null).invokeFunction(funWaveNameListener, getTime(x), i);
+                        repaint();
+                        return;                    
+                    }
                 }
 
-                int id = wave.getCallbackId(x, y);
-                if (id >= 0) {
-                    itemWaveMoveSelected = id;
-                    JsEnv.getJsEnv(null).invokeFunction(funWaveMoveListener, id, getTime(x), i);
-                    repaint();
-                    return;
+                if (funWaveMoveListener != null) {
+                    int id = wave.getCallbackId(x, y);
+                    if (id >= 0) {
+                        itemWaveMoveSelected = id;
+                        JsEnv.getJsEnv(null).invokeFunction(funWaveMoveListener, id, getTime(x), i);
+                        repaint();
+                        return;
+                    }
                 }
             }
             if (itemWaveMoveSelected != -1) {
@@ -355,7 +359,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
                     rangeSelectX2 = -1;
                     repaint();
                 }
-                super.mousePressed(e);  
+                super.mousePressed(e);
             }
 
             @Override

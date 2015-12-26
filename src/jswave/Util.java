@@ -20,7 +20,8 @@ public class Util {
     
     public static ArrayList<String> paraList = new ArrayList<String>();
 
-    public static int PARA_PATH = 0; 
+    public static int PARA_FILE_PATH = 0; 
+    public static int PARA_LIBS_PATH = 1; 
 
     public static final Font fontArial = new Font("Arial", Font.PLAIN, 12);
     private static final FontMetrics fontArialMetrics = Toolkit.getDefaultToolkit().getFontMetrics(fontArial);;

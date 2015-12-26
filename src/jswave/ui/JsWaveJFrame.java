@@ -66,10 +66,17 @@ public class JsWaveJFrame extends javax.swing.JFrame {
 
         String jarPath = Util.getJarPath();
         String defaultJs = jarPath + "default.js";
-        String libPath = jarPath + "libs\\";
-        
-        File dir = new File(libPath);
-        File files[] = dir.listFiles();
+        String libPath; 
+
+        if (Util.getPara(Util.PARA_LIBS_PATH) != null) {
+            libPath = Util.getPara(Util.PARA_LIBS_PATH);
+        }
+        else {
+            libPath = jarPath + "libs";
+        }
+
+        File libsDir = new File(libPath);        
+        File files[] = libsDir.listFiles();
         if (files != null) {
             for (File file : files) {
                 if (file.isDirectory()) {
@@ -79,9 +86,9 @@ public class JsWaveJFrame extends javax.swing.JFrame {
             }
         }
 
-        if (Util.getPara(Util.PARA_PATH) != null) {
-            if (Util.isFileExist(Util.getPara(Util.PARA_PATH))) {
-                jsEnv.loadFile(Util.getPara(Util.PARA_PATH));
+        if (Util.getPara(Util.PARA_FILE_PATH) != null) {
+            if (Util.isFileExist(Util.getPara(Util.PARA_FILE_PATH))) {
+                jsEnv.loadFile(Util.getPara(Util.PARA_FILE_PATH));
             }
         }
         else if (Util.isFileExist(defaultJs)){
