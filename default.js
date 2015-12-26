@@ -1,42 +1,6 @@
-function s(t) {
-	return Number(1000000 * t);
-}
-
-function ms(t) {
-	return Number(1000 * t);
-}
-
-function us(t) {
-	return Number(1 * t);
-}
-
-function color(r,g,b) {
-	return Number(r * 256 * 256 + g * 256 + b)
-}
-
-function ArrayList() {
-	var list = new java.util.ArrayList();
-
-	var i
-	for (i=0; i<arguments.length;i++) {
-		list.add(arguments[i])
-	}
-	return list;
-} 
-
-function Script() {
-	return Packages.jswave.js.Script.getScript();
-}
-
-var black = color(0,0,0)
-var red = color(255,0,0)
-var yellow = color(255,255,0)
-var green = color(0,255,0)
-var white = color(255,255,255)
 
 
 function infoShow(n, x, y) {
-
 	var xs = ArrayList();
 	var ys = ArrayList();
 	var names = ArrayList();
@@ -47,10 +11,13 @@ function infoShow(n, x, y) {
 
 	var script = Script();
 	script.setInfo(xs, ys, names, fgs, bgs);
-	
 }
 
-
+function infoClear() {
+	var empty = ArrayList();
+	var script = Script();
+	script.setInfo(empty, empty, empty, empty, empty);
+}
 
 function histogram_0() {
 	var time = ArrayList();
@@ -90,7 +57,7 @@ function histogram_1() {
 	//time.add(s(40)); time2.add(s(73)); ys.add(30.0); colors.add(red); names.add("2");
 
 	var script = Script();
-	script.addHistogram("histogram_1", time, time2, ys, colors, names, 50);
+	return script.addHistogram("histogram_1", time, time2, ys, colors, names, 50);
 }
 
 function line_0() {
@@ -106,7 +73,7 @@ function line_0() {
 	times.add(s(3.5)); colors.add(green); names.add("R");	ys.add(0)
 	
 	var script = Script();
-	script.addLine("line_1ABCDEFG1234\nABCDEFG", times, colors, ys, names);
+	script.addLine("line_1", times, colors, ys, names);
 	
 }
 
@@ -114,10 +81,11 @@ function line_0() {
 function main(){
 	var script = Script();
 	
+	script.setTitle("Time Range");
 	script.debug(1);
 	
 	script.setTimeRuler(s(3600 * 25) + ms(550), s(2333) + ms(670));
-	script.setTimePoint(s(8))
+	script.setTimePoint(s(8), yellow)
 	
 	script.setRangeListener("range");
 	script.setSelectListener("range");
@@ -125,9 +93,10 @@ function main(){
 	script.setWaveListener("wave");
 	script.setClickListener("click");
 	script.setNameListener("name");
+	script.addKeyListener("Q", "key_Q");
 	
-	histogram_1()
-	script.setWaveOutBorderColor(0, black)
+	var l = histogram_1()
+	script.setWaveOutBorderColor(l, black)
 	histogram_0()
 	line_0()
 	line_0()
@@ -164,19 +133,45 @@ function range(id, t1, t2){
 }
 
 function connection(id, t, l) {
-	infoShow("show " + id + "\n\nMK", t, l)
+	if (id >= 0) {
+		infoShow("show " + id + "\n\nMK", t, l)
+	}
+	else {
+		infoClear()
+	}
+	//Script().clearConnection()
 	
 }
 
 function wave(id, t, line) {
-	infoShow("line: " + line + "\nid: " + id, t, line)
+	if (id >= 0) {
+		infoShow("line: " + line + "\nid: " + id, t, line)
+	}
+	else {
+		infoClear()
+	}
 }
 
 function click(id, t, line) {
-	infoShow("click " + id, t, line)
+	if (id >= 0) {
+		infoShow("click " + id, t, line)
+	}
+	else {
+		infoClear()
+	}	
+	//Script().clearWave()
 }
 
 function name(t, line) {
-	infoShow("name " + line, t, line)
+	if (line >= 0) {
+		infoShow("name " + line, t, line)
+	}
+	else {
+		infoClear()
+	}
+}
+
+function key_Q() {
+	histogram_1()
 }
 main()
