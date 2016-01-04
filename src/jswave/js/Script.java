@@ -139,7 +139,7 @@ public class Script {
         }
     }
 
-    public int addLine(String name, ArrayList<Number> times, ArrayList<Number> colors, ArrayList<Number> ys, ArrayList<String> names) {
+    public int addLine(String name, ArrayList<Number> times, ArrayList<Number> colors, ArrayList<Number> ys) {
         ArrayList<Integer> timei = Util.an2i(times);
         ArrayList<Integer> colori = Util.an2i(colors);
         ArrayList<Integer> yi = Util.an2i(ys);
@@ -158,7 +158,7 @@ public class Script {
 
         if (!times.isEmpty()) {
             this.frame.getPanel().updateTimeLimit(timei);
-            return Line.add(name, timei, colori, yi, names);
+            return Line.add(name, timei, colori, yi);
         }
         return -1;
     }

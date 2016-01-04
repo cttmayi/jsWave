@@ -19,13 +19,14 @@ public class Line extends Wave {
     
     public ArrayList<Color> listColor = new ArrayList<Color>();
     public ArrayList<Integer> listY = new ArrayList<Integer>();
-    public ArrayList<String> listName = new ArrayList<String>();
+    //public ArrayList<String> listName = new ArrayList<String>();
 
-    public static int add(String name, ArrayList<Integer> time, ArrayList<Integer> colors, ArrayList<Integer> ys, ArrayList<String> names) {
+    public static int add(String name, ArrayList<Integer> time, ArrayList<Integer> colors, ArrayList<Integer> ys) {
         Line wave = new Line();
         wave.type = Wave.LINE;
         wave.setName(name);
         
+        wave.setHeightMax(Util.fontHeight * 3 / 2);
         
         for (int id=0; id<colors.size(); id++) {
             Color color = ColorMake(colors.get(id));
@@ -33,10 +34,10 @@ public class Line extends Wave {
         }
         wave.listTime = time;
         wave.listY = ys;
-        wave.listName = names;
+        //wave.listName = names;
         
         for (int y: ys) {
-            wave.setHeightMax(y + Util.fontHeight);
+            wave.setHeightMax(y);
         }
 
         return Wave.add(wave);
@@ -73,14 +74,14 @@ public class Line extends Wave {
             g.fillRect(timeStart, yy, timeEnd - timeStart, ww);
             addTouch(timeId-1, timeStart, yy, timeEnd, yy+ww);
 
-            String str = null;
-            if (timeId < listName.size()) {
-                str = listName.get(timeId);
-                if (str != null && !str.equals("")) {
-                    str = Util.trimDownText(str, timeEnd - timeStart - 8);
-                    g.drawString(str, timeStart + 4, yy - 5);
-                }
-            }
+            //String str = null;
+            //if (timeId < listName.size()) {
+            //    str = listName.get(timeId);
+            //    if (str != null && !str.equals("")) {
+            //        str = Util.trimDownText(str, timeEnd - timeStart - 8);
+            //        g.drawString(str, timeStart + 4, yy - 5);
+            //    }
+            //}
 
             timeStart = timeEnd;
 
