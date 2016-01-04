@@ -364,11 +364,12 @@ public final class WaveJPanel extends javax.swing.JPanel {
 
             @Override
             public void mouseReleased(MouseEvent e) {
+                //System.out.println(e.getButton());
                 if (funSelectRangeListener != null) {
                     if (rangeSelectX1 >= 0 && rangeSelectX2 >= 0) {
                         int  x1 = Math.min(rangeSelectX1, rangeSelectX2);
                         int  x2 = Math.max(rangeSelectX1, rangeSelectX2);
-                        JsEnv.getJsEnv(null).invokeFunction(funSelectRangeListener, itemSelected, getTime(x1), getTime(x2));
+                        JsEnv.getJsEnv(null).invokeFunction(funSelectRangeListener, itemSelected, getTime(x1), getTime(x2), e.getButton());
                         rangeSelectX1 = -1;
                         rangeSelectX2 = -1;
                     }
