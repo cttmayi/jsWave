@@ -70,6 +70,10 @@ public class Wave extends Widget{
         return (getLineY0(line) + getLineY2(line))/2;
     }
 
+    public static int getType(int line) {
+        return Wave.get(line).type;
+    }
+    
     public static int LINE = 0;
     public static int DIAGRAM = 1;
     public static int HISTOGRAM = 2;

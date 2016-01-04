@@ -53,7 +53,7 @@ public class Line extends Wave {
 
         drawName(g, getName(), y, getHeightMax());
 
-        setY(y - getHeightMax()/2, y);
+        setY(y - getHeightMax()/2 - 1, y);
         clearTouch();
         for (int timeId=1; timeId<x.size(); timeId++) {
             if (x.get(timeId) < offsetX) {timeStart = offsetX; continue;}
