@@ -42,6 +42,7 @@ public class Line extends Wave {
         return Wave.add(wave);
     }
     
+    @Override
     public void draw(Graphics g, int y, double wdt) {
         //System.out.println("Line:" + y);
         ArrayList<Integer> x = getX(timeX, offsetX, wdt);
@@ -51,7 +52,7 @@ public class Line extends Wave {
 
         drawName(g, getName(), y, getHeightMax());
 
-        setY(y - Line.lineHeight, y);
+        setY(y - getHeightMax()/2, y);
         clearTouch();
         for (int timeId=1; timeId<x.size(); timeId++) {
             if (x.get(timeId) < offsetX) {timeStart = offsetX; continue;}
@@ -59,19 +60,24 @@ public class Line extends Wave {
             g.setColor(listColor.get(timeId));
             int timeEnd = x.get(timeId);
 
-            int yy = y;
+            int yy;
+            int ww;
             if (timeId < listY.size()) {
-                yy = y - listY.get(timeId);
+                yy = y - getHeightMax()/2 - listY.get(timeId)/2;
+                ww = listY.get(timeId);
             }
-            g.fillRect(timeStart, yy-Line.lineHeight, timeEnd - timeStart, Line.lineHeight);
-            addTouch(timeId-1, timeStart, yy-10, timeEnd, yy);
+            else {
+                yy = y - getHeightMax()/2 -Line.lineHeight/2;
+                ww = Line.lineHeight;
+            }
+            g.fillRect(timeStart, yy, timeEnd - timeStart, ww);
+            addTouch(timeId-1, timeStart, yy, timeEnd, yy+ww);
 
             String str = null;
             if (timeId < listName.size()) {
                 str = listName.get(timeId);
                 if (str != null && !str.equals("")) {
                     str = Util.trimDownText(str, timeEnd - timeStart - 8);
-                    //g.setColor(colorFont);
                     g.drawString(str, timeStart + 4, yy - 5);
                 }
             }
