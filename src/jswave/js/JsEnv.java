@@ -63,14 +63,16 @@ public class JsEnv {
         loadString("function " + function + "(){}");
     }
     
-    public boolean invokeFunction(String functionname, Object ... args) {
+    public boolean invokeFunction(String functionName, Object ... args) {
         Invocable inv = (Invocable) engine;
         try {
-            inv.invokeFunction(functionname, args);
+            inv.invokeFunction(functionName, args);
         } catch (ScriptException ex) {
+            System.out.println("[ERROR] function error: " + functionName);
             Logger.getLogger(JsEnv.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         } catch (NoSuchMethodException ex) {
+            System.out.println("[ERROR] function lost: " + functionName);
             Logger.getLogger(JsEnv.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
