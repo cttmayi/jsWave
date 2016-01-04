@@ -63,17 +63,16 @@ function histogram_1() {
 function line_0() {
 	var times = ArrayList();
 	var colors = ArrayList();	
-	var names = ArrayList();
 	var ys = ArrayList();
 	
 	
-	times.add((s(1))); colors.add(black); names.add(""); ys.add(0)
-	times.add(s(2)); colors.add(yellow); names.add("S");ys.add(3)
-	times.add(s(3)); colors.add(red); names.add("R");ys.add(0)
-	times.add(s(3.5)); colors.add(green); names.add("R");	ys.add(0)
+	times.add((s(1))); colors.add(black); ys.add(30)
+	times.add(s(2)); colors.add(yellow); ys.add(42)
+	times.add(s(3)); colors.add(red); ys.add(4)
+	times.add(s(3.5)); colors.add(green); ys.add(4)
 	
 	var script = Script();
-	script.addLine("line_1", times, colors, ys, names);
+	script.addLine("line_1", times, colors, ys);
 	
 }
 
@@ -81,14 +80,14 @@ function line_0() {
 function main(){
 	var script = Script();
 	
-	script.setTitle("Time Range");
+	script.setTitle("Time Range A");
 	script.debug(1);
 	
 	script.setTimeRuler(s(3600 * 25) + ms(550), s(2333) + ms(670));
 	script.setTimePoint(s(8), yellow)
 	
 	script.setRangeListener("range");
-	script.setSelectListener("range");
+	script.setSelectListener("select");
 	script.setConnectionListener("connection");
 	script.setWaveListener("wave");
 	script.setClickListener("click");
@@ -117,7 +116,31 @@ function main(){
 	script.setText("Message is too long")
 }
 
-function range(id, t1, t2){
+function range(id, t1, t2, b){
+
+	var LEFT = 1
+	var RIGHT = 3
+	var script = Script();
+	script.print(b)
+	
+	if (b == LEFT) {
+		var name = ArrayList("T", String(id))
+		var d = ArrayList()
+		d.add("T1")	
+		d.add(String(t1))	
+		var d2 = ArrayList()
+		d2.add("T2")
+		d2.add(String(t2))
+
+		script.setTable(name, d, d2)
+		script.setText("MK")
+	}
+	else {
+		script.setTimeRange(t1, t2 - t1);
+	}
+}
+
+function select(id, t1, t2){
 
 	var name = ArrayList("T", String(id))
 	var d = ArrayList()
