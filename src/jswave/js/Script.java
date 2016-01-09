@@ -13,6 +13,8 @@ import jswave.st.Group;
 import jswave.st.Histogram;
 import jswave.st.Info;
 import jswave.st.Line;
+import jswave.st.Node;
+import jswave.st.Nodes;
 import jswave.st.TimeRuler;
 import jswave.st.Wave;
 
@@ -55,6 +57,11 @@ public class Script {
         return this.frame.getPanel().getTimeWidth();
     }
 
+    public void setPanelXOffset(int offset) {
+        this.frame.getPanel().setPanelXOffset(offset);
+    }
+    
+    
     public void setTimePoint(Number us, Number color) {
         TimeRuler.getData().setTimePoint(us.intValue(), color.intValue());
     }
@@ -128,7 +135,7 @@ public class Script {
     public boolean getGroupStatus(int id) {
         return Group.getStatus(id);
     }
-    
+
     public void setWaveOutBorderColor(int id, int color) {
         if (id < Wave.size() ) {
             Wave wave =  Wave.get(id);
@@ -200,11 +207,48 @@ public class Script {
         return -1;
     }
 
+    public int addNode(ArrayList<Number> hs, ArrayList<Number> ys, ArrayList<Number> colori, Number fc) {
+        ArrayList<Integer> hi = Util.an2i(hs);
+        ArrayList<Integer> yi = Util.an2i(ys);
+        ArrayList<Integer> ci = Util.an2i(colori);
+        Integer fci = fc.intValue();
+
+        return Node.add(hi, yi, ci, fci);
+    }
+
+    public int addNodes(String name, Number height, ArrayList<Number> startTimes, ArrayList<Number> endTimes, ArrayList<Number> nodeIndexs, ArrayList<String> nodeNames) {
+        ArrayList<Integer> sti = Util.an2i(startTimes);
+        ArrayList<Integer> eti = Util.an2i(endTimes);
+        ArrayList<Integer> ni = Util.an2i(nodeIndexs);
+
+        if (Util.isDebug) {
+            System.out.println("addNodes:" + name);
+            int time = Integer.MIN_VALUE;
+            
+            for (int i=0; i<sti.size(); i++) {
+                if (time > sti.get(i)) {
+                    System.out.println("[ERROR] ROW:" + i + " ORDER ERROR!");
+                }
+                time = eti.get(i);
+                
+                if (sti.get(i) > eti.get(i)) {
+                    System.out.println("[ERROR] ROW:" + i + " SIZE ERROR!");
+                }
+            }
+        }
+
+        this.frame.getPanel().updateTimeLimit(sti);
+        this.frame.getPanel().updateTimeLimit(eti);
+        this.frame.getPanel().repaint();
+        return Nodes.add(name, height.intValue(), sti, eti, ni, nodeNames);
+    }
+    
     public void clearWave() {
         Info.clear();
         Connection.clear();
         Group.clear();
         Wave.clear();
+        this.frame.getPanel().repaint();
     }
 
     public int addConnection(Number time, Number start, Number end, Number color) {
@@ -216,6 +260,11 @@ public class Script {
         }
         return -1;
     }
+
+    public void setLineConnctionY(int line, int start, int end) {
+        Wave.get(line).setConnectionY(start, end);
+    }
+    
 
     public void clearConnection() {
         Connection.clear();

@@ -70,15 +70,25 @@ public class Wave extends Widget{
         return (getLineY0(line) + getLineY2(line))/2;
     }
 
+    
+    public static int getLineConnectionY1(int line) {
+        return Wave.get(line).getConnectionY1();
+    }
+
+    public static int getLineConnectionY2(int line) {
+        return Wave.get(line).getConnectionY2();
+    }
+    
     public static int getType(int line) {
         return Wave.get(line).type;
     }
-    
+
     public static int LINE = 0;
     public static int DIAGRAM = 1;
     public static int HISTOGRAM = 2;
+    public static int NODES = 3;
 
-    private static final Color colorSplitLine = new Color(255,0,0,30);
+    private static final Color colorSplitLine = new Color(32,32,112);
 
     public int type;
 
@@ -90,8 +100,12 @@ public class Wave extends Widget{
 
     private int heightMax = 10;
 
-    private int yStart = 0;
-    private int yEnd = 0;
+    private int yStart = -1;
+    private int yEnd = -1;
+
+    private int yConectionStart = -1;
+    private int yConectionEnd = -1;
+    
     
     private boolean isCallbackEnable;
 
@@ -177,6 +191,25 @@ public class Wave extends Widget{
         return (yStart + yEnd)/2;
     }    
 
+    public void setConnectionY(int start, int end) {
+        yConectionStart = start;
+        yConectionEnd = end;
+    }
+
+    public int getConnectionY1() {
+        if (yConectionStart >= 0) {
+            return yEnd - yConectionStart;
+        }
+        return getY1();
+    }
+
+    public int getConnectionY2() {
+        if (yConectionEnd >= 0) {
+            return yEnd - yConectionEnd;
+        }
+        return getY2();
+    }
+    
     public void setTime(ArrayList<Integer> time) {
         listTime = time;    
     }
@@ -205,6 +238,16 @@ public class Wave extends Widget{
         return x;
     }
 
+    public ArrayList<Integer> timeToW(ArrayList<Integer> times, ArrayList<Integer> times2,double wdt) {
+        ArrayList<Integer> x = new ArrayList<Integer>();
+        for (int id=0; id<times.size(); id++) {
+            Integer t = times2.get(id) - times.get(id);
+            x.add(Util.getW(t,wdt));
+        }
+        return x;
+    }
+    
+    
     public static Color ColorMake(int colori) {
         return Util.colorMake(colori);
     }

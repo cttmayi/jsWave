@@ -51,6 +51,7 @@ public class Histogram extends Wave{
         return  Wave.add(wave);
     }    
 
+    @Override
     public void draw(Graphics g, int y, double wdt) {
         //System.out.println("Histogram:" + y);
         ArrayList<Integer> x = getX(timeX, offsetX, wdt);

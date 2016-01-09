@@ -16,7 +16,7 @@ import jswave.Util;
  */
 public class Line extends Wave {
     public static final int lineHeight = 3;    
-    
+
     public ArrayList<Color> listColor = new ArrayList<Color>();
     public ArrayList<Integer> listY = new ArrayList<Integer>();
     //public ArrayList<String> listName = new ArrayList<String>();
@@ -25,17 +25,16 @@ public class Line extends Wave {
         Line wave = new Line();
         wave.type = Wave.LINE;
         wave.setName(name);
-        
+
         wave.setHeightMax(Util.fontHeight * 3 / 2);
-        
-        for (int id=0; id<colors.size(); id++) {
-            Color color = ColorMake(colors.get(id));
+
+        for (Integer colori : colors) {
+            Color color = ColorMake(colori);
             wave.listColor.add(color);
         }
         wave.listTime = time;
         wave.listY = ys;
-        //wave.listName = names;
-        
+
         for (int y: ys) {
             wave.setHeightMax(y);
         }

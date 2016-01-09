@@ -87,23 +87,14 @@ public class Connection extends Widget{
 
             int yStart, yEnd, yO;
             if (start < end) {
-                if (Wave.getType(start) == Wave.LINE) {
-                    yStart = Wave.getLineY1(start);
-                }
-                else {
-                    yStart = Wave.getLineY2(start);
-                }
-                yEnd = Wave.getLineY1(end);
+                yStart = Wave.getLineConnectionY2(start);
+                yEnd = Wave.getLineConnectionY1(end);
                 yO = yEnd - 4;
             }
             else {
-                yStart = Wave.getLineY1(start);
-                if (Wave.getType(start) == Wave.LINE) {
-                    yEnd = Wave.getLineY1(end);
-                }
-                else {
-                    yEnd = Wave.getLineY2(end);
-                }
+                yStart = Wave.getLineConnectionY1(start);
+                yEnd = Wave.getLineConnectionY2(end);
+
                 yO = yEnd;
             }
             if (yStart != yEnd) {

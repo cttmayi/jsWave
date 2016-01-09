@@ -73,6 +73,10 @@ public class Util {
         return getX(t, pX, timeX, (double)pW/timeW);
     }
 
+    public static int getW(int t, double pdt) {
+        return (int) Math.ceil(pdt * (t));
+    }
+    
     public static Color colorMake(int colori) {
         return new Color((0xFF0000 & colori) >> 16, (0xFF00 & colori) >> 8, 0xFF & colori);
     }
@@ -206,7 +210,7 @@ public class Util {
             return String.format("%.03fs",((double)(t))/Util.S);
         }
         else {
-            return String.format("%.04fs",((double)(t))/Util.S);
+            return String.format("%fs",((double)(t))/Util.S);
         }
     }
 
@@ -218,7 +222,8 @@ public class Util {
             return String.format("%dms",((t))/Util.MS);
         }
         else {
-            return String.format("%dus",((t))/Util.US);
+            //return String.format("%dus",((t))/Util.US);
+            return String.format("%.01fms",((double)(t))/Util.MS);
         }
     }
 }
