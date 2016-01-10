@@ -19,99 +19,140 @@ function infoClear() {
 	script.setInfo(empty, empty, empty, empty, empty);
 }
 
-function histogram_0() {
-	var time = ArrayList();
-	var time2 = ArrayList();
-	var colors = ArrayList();
-	var ys = ArrayList();
+function node_0() {
+	var script = Script();
+	var hs = ArrayList(5, 20);
+	var colors = ArrayList(dark_yellow, dark_red);	
+	var ys = ArrayList(0, 5);
+	return script.addNode(hs, ys, colors, red);
+}
+
+function node_1() {
+	var script = Script();
+	var hs = ArrayList(25);
+	var colors = ArrayList(dark_red);	
+	var ys = ArrayList(0);
+	return script.addNode(hs, ys, colors, red);
+}
+
+function node_2() {
+	var script = Script();
+	var hs = ArrayList(25);
+	var colors = ArrayList(dark_yellow);	
+	var ys = ArrayList(0);
+	return script.addNode(hs, ys, colors, yellow);
+}
+
+function nodes_histogram() {
+	var script = Script();
+	
+	var n_0 = node_0();
+	var n_1 = node_1();
+	var n_2 = node_2();
+	
+	
+	
+	var stime = ArrayList();
+	var etime = ArrayList();
+	var nodes = ArrayList();
 	var names = ArrayList();
 	
-	time.add(ms(1)); time2.add(ms(1)+us(1)); ys.add(40.0);  colors.add(red); names.add("3");
-	time.add(ms(2)); time2.add(ms(3)); ys.add(40.0);  colors.add(red); names.add("3");
+	stime.add(s(1)); etime.add(s(2)); nodes.add(n_0); names.add("1")
+	stime.add(s(3)); etime.add(s(5)); nodes.add(n_1); names.add("2")
+	stime.add(s(5.1)); etime.add(s(6)); nodes.add(n_2); names.add("3")
+	stime.add(s(6)); etime.add(s(7.1)); nodes.add(n_0); names.add("4")
+	return script.addNodes("histogram", 50, stime, etime, nodes, names);
+}
 
-	time.add(ms(4)); time2.add(ms(5)); ys.add(50.0);  colors.add(green); names.add("3");
-	time.add(s(2)); time2.add(s(3)); ys.add(40.0);  colors.add(yellow); names.add("3");
-	time.add(s(4)); time2.add(s(13)); ys.add(40.0); colors.add(yellow); names.add("2");
-	time.add(s(40)); time2.add(s(73)); ys.add(30.0); colors.add(red); names.add("2");
-
+function node_sleep(h) {
 	var script = Script();
-	script.addHistogram("histogram_0", time, time2, ys, colors, names, 50);
+	var hs = ArrayList(1);
+	var colors = ArrayList(dark_yellow);	
+	var ys = ArrayList(h/2);
+	return script.addNode(hs, ys, colors, dark_yellow);
+}
+
+function node_run(h) {
+	var script = Script();
+	var hs = ArrayList(1);
+	var colors = ArrayList(green);	
+	var ys = ArrayList(h-3);
+	return script.addNode(hs, ys, colors, green);
+}
+
+function node_runable(h) {
+	var script = Script();
+	var hs = ArrayList(h-4);
+	var colors = ArrayList(dark_red);	
+	var ys = ArrayList(2);
+	return script.addNode(hs, ys, colors, red);
 }
 
 
-function histogram_1() {
-	var time = ArrayList();
-	var time2 = ArrayList();
-	var colors = ArrayList();
-	var ys = ArrayList();
+
+function nodes_line() {
+	var script = Script();
+	
+	var h = 20
+	var sleep = node_sleep(h);
+	var run = node_run(h);
+	var runable = node_runable(h);
+	
+	
+	
+	var stime = ArrayList();
+	var etime = ArrayList();
+	var nodes = ArrayList();
 	var names = ArrayList();
 	
-	time.add(ms(-1000)); time2.add(ms(1.5)); ys.add(40.0);  colors.add(red); names.add("3");
-	//time.add(ms(2)); time2.add(ms(3)); ys.add(40.0);  colors.add(red); names.add("3");
+	stime.add(ms(1)); etime.add(ms(4)); nodes.add(sleep);
+	stime.add(ms(4)); etime.add(ms(5)); nodes.add(runable);
+	stime.add(ms(5)); etime.add(ms(6)); nodes.add(run);
+	stime.add(ms(6)); etime.add(ms(7.1)); nodes.add(sleep);
 	
-	//time.add(ms(4)); time2.add(ms(4)); ys.add(40.0);  colors.add(red); names.add("3");
-	time.add(s(17)+ms(5)); time2.add(s(17)+ms(5)); ys.add(40.0);  colors.add(red); names.add("3");
-	//time.add(ms(4)); time2.add(ms(5)); ys.add(50.0);  colors.add(green); names.add("3");
-	//time.add(s(2)); time2.add(s(3)); ys.add(40.0);  colors.add(yellow); names.add("3");
-	//time.add(s(4)); time2.add(s(13)); ys.add(40.0); colors.add(yellow); names.add("2");
-	//time.add(s(40)); time2.add(s(73)); ys.add(30.0); colors.add(red); names.add("2");
+	
+	stime.add(s(1)); etime.add(s(3)); nodes.add(sleep);
+	stime.add(s(3)); etime.add(s(5)); nodes.add(runable);
+	stime.add(s(5)); etime.add(s(6)); nodes.add(run);
+	stime.add(s(6)); etime.add(s(7.1)); nodes.add(sleep);
+	
 
-	var script = Script();
-	return script.addHistogram("histogram_1", time, time2, ys, colors, names, 50);
+	var lid = script.addNodes("line", h, stime, etime, nodes, names);
+	script.setLineConnctionY(lid, h/2+3, h/2-3);
+	return lid
 }
-
-function line_0() {
-	var times = ArrayList();
-	var colors = ArrayList();	
-	var ys = ArrayList();
-	
-	
-	times.add((s(1))); colors.add(black); ys.add(30)
-	times.add(s(2)); colors.add(yellow); ys.add(42)
-	times.add(s(3)); colors.add(red); ys.add(4)
-	times.add(s(3.5)); colors.add(green); ys.add(4)
-	
-	var script = Script();
-	script.addLine("line_1", times, colors, ys);
-	
-}
-
 
 function main(){
 	var script = Script();
 	
 	script.setTitle("Time Range A");
+	script.setPanelXOffset(150);
 	script.debug(1);
 	
 	script.setTimeRuler(s(3600 * 25) + ms(550), s(2333) + ms(670));
 	script.setTimePoint(s(8), yellow)
 	
 	script.setRangeListener("range");
-	script.setSelectListener("select");
+	script.setSelectListener("selectWave");
 	script.setConnectionListener("connection");
 	script.setWaveListener("wave");
 	script.setClickListener("click");
 	script.setNameListener("name");
 	script.addKeyListener("Q", "key_Q");
-	
-	var l = histogram_1()
-	script.setWaveOutBorderColor(l, black)
-	histogram_0()
-	line_0()
-	line_0()
-	line_0()
-	line_0()
 
-	script.addConnection(s(1), 1, 2, white);
-	script.addConnection(s(2), 2, 3, black);
-
-	script.addConnection(s(1.8), 0, 3, red);
-	//script.addConnection(s(2), 9, 3, 0);
-	//script.addConnection(s(2.5), 22, 6, 0);	
+	nodes_histogram()
+	nodes_histogram()
 	
-	script.addGroup("ANR", 0,0,yellow,true)
-	script.addGroup("Message", 1,2,yellow,true)
-	script.addGroup("TRACE", 3,4,green,false)
+	nodes_line()
+	nodes_line()
+	nodes_line()
+
+	script.addConnection(s(1), 0, 1, white);
+	script.addConnection(s(2), 1, 0, white);
+	script.addConnection(s(3.2), 2, 3, yellow);
+	script.addConnection(s(4.2), 3, 2, yellow);
+	
+	script.addGroup("MORE", 0,1, blue,true)
 	
 	script.setText("Message is too long")
 }
@@ -123,7 +164,11 @@ function range(id, t1, t2, b){
 	var script = Script();
 	script.print(b)
 	
-	if (b == LEFT) {
+
+	if (b == RIGHT && t2 - t1 > 800){
+		script.setTimeRange(t1, t2 - t1);
+	}
+	else if (b == LEFT) {
 		var name = ArrayList("T", String(id))
 		var d = ArrayList()
 		d.add("T1")	
@@ -135,12 +180,10 @@ function range(id, t1, t2, b){
 		script.setTable(name, d, d2)
 		script.setText("MK")
 	}
-	else {
-		script.setTimeRange(t1, t2 - t1);
-	}
+	script.setText("select wave range")
 }
 
-function select(id, t1, t2){
+function selectWave(id, t1, t2){
 
 	var name = ArrayList("T", String(id))
 	var d = ArrayList()
@@ -152,12 +195,12 @@ function select(id, t1, t2){
 	
 	var script = Script();
 	script.setTable(name, d, d2)
-	script.setText("MK")
+	script.setText("select wave")
 }
 
 function connection(id, t, l) {
 	if (id >= 0) {
-		infoShow("show " + id + "\n\nMK", t, l)
+		infoShow("show " + id + "\n\nshow", t, l)
 	}
 	else {
 		infoClear()
@@ -195,6 +238,5 @@ function name(t, line) {
 }
 
 function key_Q() {
-	histogram_1()
 }
 main()
