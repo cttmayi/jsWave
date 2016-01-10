@@ -246,7 +246,7 @@ public final class WaveJPanel extends javax.swing.JPanel {
         g.setFont(Util.fontArial);
 
         double wdt = (double)getW() / timeW;
-        int gap = 5;
+        int gap = 1;
         int g_gap = Util.fontHeight / 2 * 3;
 
         TimeRuler.show(g, 0);

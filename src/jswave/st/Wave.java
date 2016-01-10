@@ -70,7 +70,6 @@ public class Wave extends Widget{
         return (getLineY0(line) + getLineY2(line))/2;
     }
 
-    
     public static int getLineConnectionY1(int line) {
         return Wave.get(line).getConnectionY1();
     }
@@ -78,7 +77,7 @@ public class Wave extends Widget{
     public static int getLineConnectionY2(int line) {
         return Wave.get(line).getConnectionY2();
     }
-    
+
     public static int getType(int line) {
         return Wave.get(line).type;
     }
@@ -105,8 +104,7 @@ public class Wave extends Widget{
 
     private int yConectionStart = -1;
     private int yConectionEnd = -1;
-    
-    
+
     private boolean isCallbackEnable;
 
     public Wave() {
@@ -209,7 +207,7 @@ public class Wave extends Widget{
         }
         return getY2();
     }
-    
+
     public void setTime(ArrayList<Integer> time) {
         listTime = time;    
     }
@@ -239,24 +237,23 @@ public class Wave extends Widget{
     }
 
     public ArrayList<Integer> timeToW(ArrayList<Integer> times, ArrayList<Integer> times2,double wdt) {
-        ArrayList<Integer> x = new ArrayList<Integer>();
+        ArrayList<Integer> ws = new ArrayList<Integer>();
         for (int id=0; id<times.size(); id++) {
             Integer t = times2.get(id) - times.get(id);
-            x.add(Util.getW(t,wdt));
+            ws.add(Util.getW(t,wdt));
+            //System.out.println("t:" + t + " w:" + Util.getW(t,wdt));
         }
-        return x;
+        return ws;
     }
-    
-    
+
     public static Color ColorMake(int colori) {
         return Util.colorMake(colori);
     }
 
     public void draw(Graphics g, int y, double wdt) {
-        
+
     }
 
-    
     public static void show(Graphics g, int y, double wdt, int gap, int g_gap) {
         int groupId = -1;
         for (int id=offsetLine; id<Wave.size(); id ++) {
@@ -274,7 +271,7 @@ public class Wave extends Widget{
 
                 g.setColor(colorSplitLine);
                 g.fillRect(0, y, screenW, 1);
-                
+
                 if (y < screenH) {
                     list.draw(g, y, wdt);
                 }
@@ -287,5 +284,4 @@ public class Wave extends Widget{
             }
         }
     }
-    
 }

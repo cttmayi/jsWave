@@ -83,7 +83,7 @@ public class Util {
 
     public static int o2i(Object o) {
         String type = o.getClass().getName();
-        System.out.println(type);
+        //System.out.println(type);
         if (type.equals("java.lang.Double")) {
             
         }
