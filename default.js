@@ -97,9 +97,7 @@ function nodes_line() {
 	var sleep = node_sleep(h);
 	var run = node_run(h);
 	var runable = node_runable(h);
-	
-	
-	
+
 	var stime = ArrayList();
 	var etime = ArrayList();
 	var nodes = ArrayList();
@@ -157,44 +155,43 @@ function main(){
 	script.setText("Message is too long")
 }
 
+function showTable() {
+	
+	var script = Script();
+	var names = ArrayList("TTTTTTTTTTT1", "T2", "T3", "T4", "T5");
+	var data = ArrayList("111111111111", "54343", "3", "4", "5");
+	var datas = ArrayList(names, data, data, data, data);
+	
+	var fg = ArrayList(red, yellow)
+	var fgs = ArrayList(fg, fg, fg)
+
+	var bg = ArrayList(yellow, red)
+	var bgs = ArrayList(bg, bg)
+	
+	script.setTable(datas, fgs, bgs);
+	
+}
+
+
 function range(id, t1, t2, b){
 
 	var LEFT = 1
 	var RIGHT = 3
 	var script = Script();
-	script.print(b)
+	//script.print(b)
 	
 
 	if (b == RIGHT && t2 - t1 > 800){
 		script.setTimeRange(t1, t2 - t1);
 	}
 	else if (b == LEFT) {
-		var name = ArrayList("T", String(id))
-		var d = ArrayList()
-		d.add("T1")	
-		d.add(String(t1))	
-		var d2 = ArrayList()
-		d2.add("T2")
-		d2.add(String(t2))
-
-		script.setTable(name, d, d2)
+		showTable()
 		script.setText("MK")
 	}
 	script.setText("select wave range")
 }
 
 function selectWave(id, t1, t2){
-
-	var name = ArrayList("T", String(id))
-	var d = ArrayList()
-	d.add("T1")	
-	d.add(String(t1))	
-	var d2 = ArrayList()
-	d2.add("T2")
-	d2.add(String(t2))
-	
-	var script = Script();
-	script.setTable(name, d, d2)
 	script.setText("select wave")
 }
 
