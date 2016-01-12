@@ -5,6 +5,8 @@
  */
 package jswave.ui;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -12,6 +14,8 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
 import java.io.File;
 import java.util.ArrayList;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import jswave.Util;
 import jswave.js.JsEnv;
@@ -147,33 +151,100 @@ public class JsWaveJFrame extends javax.swing.JFrame {
             } 
         });
     }
-    
-    public void setTable(ArrayList<String> names, ArrayList<String> datas, ArrayList<String> datars) {
 
+    ArrayList<ArrayList<Color>> tableBgColor = null;
+    ArrayList<ArrayList<Color>> tableFgColor = null;
+    
+    public void setTable(ArrayList<ArrayList<String>> datas,
+            ArrayList<ArrayList<Color>> fgc, ArrayList<ArrayList<Color>> bgc,
+            ArrayList<Integer> width) {
+        tableFgColor = fgc;
+        tableBgColor = bgc;
+        
         DefaultTableModel tableModel = (DefaultTableModel) jTableInfo.getModel();
         tableModel.setColumnCount(0);
         tableModel.setRowCount(0);
+        
+        for (int i=0; i<datas.get(0).size(); i++) {
+            String title = datas.get(0).get(i);
+            tableModel.addColumn(title);
+        }
+        
+        DefaultTableCellRenderer tcr = new DefaultTableCellRenderer() { 
+            @Override
+            public Component getTableCellRendererComponent(JTable table,
+                    Object value, boolean isSelected, boolean hasFocus, int row,
+                    int column)
+            {
+                Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                
+                Color bg = new Color(240,240,240);
+                
+                try {
+                    Color color = tableFgColor.get(row).get(column);
+                    comp.setForeground(color);
+                }
+                catch (Exception e) {
+                    comp.setForeground(Color.black);
+                }
 
-        if (0 < names.size()){
-            tableModel.addColumn(names.get(0));
-        }
-        if (0 < datas.size()){
-            tableModel.addColumn(datas.get(0));
-        }
-        if (0 < datars.size()){
-            tableModel.addColumn(datars.get(0));
-        }
-        for(int id=1; id <names.size(); id++){
-            String[] arr=new String[3];
-            arr[0]=names.get(id);
-            if (id < datas.size()){
-                arr[1]=datas.get(id);
+                try {
+                    Color color = tableBgColor.get(row).get(column);
+                    comp.setBackground(color);
+                }
+                catch (Exception e) {
+                    if (row % 2 == 0){
+                        comp.setBackground(Color.white);
+                    }
+                    else {
+                        comp.setBackground(bg);
+                    }
+                }
+                return comp;
             }
-            if (id < datars.size()){
-                arr[2]=datars.get(id);
+        };
+
+        for (int i=0; i<datas.get(0).size(); i++) {
+            //String title = datas.get(0).get(i);
+            jTableInfo.getColumnModel().getColumn(i).setCellRenderer(tcr);
+            //jTableInfo.getColumn(title).setCellRenderer(tcr);
+        }
+
+        if (false) {
+            jTableInfo.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+            int col = 0;
+            int w = 0;
+            for (int i=0; i<width.size(); i++) {
+                if (width.get(i) < 0) {
+                    col ++;
+                }
+                else {
+                    w += width.get(i);
+                }
+            }
+            for (int i=0; i<width.size(); i++) {
+                if (width.get(i) < 0) {
+                    width.set(i, (jTableInfo.getWidth() - w)/col);
+                }
+            }
+
+            for (int i=0; i<datas.get(0).size() && i < width.size(); i++) {
+                jTableInfo.getColumnModel().getColumn(i).setPreferredWidth(width.get(i));
+            }
+        }
+        
+        for(int i=1; i<datas.size(); i++){
+            ArrayList<String> data = datas.get(i);
+            
+            String[] arr = new String[data.size()];
+            
+            for (int j=0; j<data.size(); j++) {
+                arr[j] = data.get(j);
             }
             tableModel.addRow(arr);
         }
+
         jTableInfo.invalidate();
     }
 
@@ -221,46 +292,12 @@ public class JsWaveJFrame extends javax.swing.JFrame {
 
         jTableInfo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"", null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "Name", "Data", "Data"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
             }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         jTableInfo.setEnabled(false);
         jTableInfo.setName(""); // NOI18N
         jScrollPaneU.setViewportView(jTableInfo);

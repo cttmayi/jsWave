@@ -5,6 +5,7 @@
  */
 package jswave.js;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import jswave.ui.JsWaveJFrame;
 import jswave.Util;
@@ -270,8 +271,32 @@ public class Script {
         Connection.clear();
     }
 
-    public void setTable(ArrayList<String> names, ArrayList<String> datas, ArrayList<String> datars) {
-        this.frame.setTable(names, datas, datars);
+    private ArrayList<ArrayList<Color>> colorMakes(ArrayList<ArrayList<Number>> fgciss) {
+
+        if (fgciss == null) {
+            return null;
+        }
+        ArrayList<ArrayList<Color>> fgcss = new ArrayList<ArrayList<Color>>();
+        for (int i=0;i<fgciss.size(); i++) {
+            ArrayList<Number> fgcis = fgciss.get(i);
+            fgcss.add(new ArrayList<Color>());
+            for (int j=0; j<fgcis.size(); j++) {
+                Number fgci = fgcis.get(j);
+                fgcss.get(i).add(Util.colorMake(fgci.intValue()));
+            }
+        }
+        return fgcss;
+    }
+    
+    
+    public void setTable(ArrayList<ArrayList<String>> datas,
+            ArrayList<ArrayList<Number>> fgciss, ArrayList<ArrayList<Number>> bgciss) {
+        ArrayList<ArrayList<Color>> fgc = colorMakes(fgciss);
+        ArrayList<ArrayList<Color>> bgc = colorMakes(bgciss);
+        
+        //ArrayList<Integer> w = Util.an2i(width);
+        
+        this.frame.setTable(datas, fgc, bgc, null);
     }
 
     public void setText(String text) {

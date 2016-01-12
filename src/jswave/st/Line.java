@@ -73,15 +73,6 @@ public class Line extends Wave {
             g.fillRect(timeStart, yy, timeEnd - timeStart, ww);
             addTouch(timeId-1, timeStart, yy, timeEnd, yy+ww);
 
-            //String str = null;
-            //if (timeId < listName.size()) {
-            //    str = listName.get(timeId);
-            //    if (str != null && !str.equals("")) {
-            //        str = Util.trimDownText(str, timeEnd - timeStart - 8);
-            //        g.drawString(str, timeStart + 4, yy - 5);
-            //    }
-            //}
-
             timeStart = timeEnd;
 
             if (timeStart > screenW) break;
